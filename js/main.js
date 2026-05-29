@@ -62,7 +62,7 @@ function handleImageError(imgElement) {
 function initImageErrorHandling() {
     document.querySelectorAll('img').forEach(img => {
         img.setAttribute('onerror', 'handleImageError(this)');
-        if (!img.complete || img.naturalWidth === 0) {
+        if (img.complete && img.naturalWidth === 0) {
             handleImageError(img);
         }
     });

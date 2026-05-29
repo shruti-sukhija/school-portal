@@ -32,13 +32,17 @@ function loadAboutPage() {
     if (leadershipSection) {
         leadershipSection.innerHTML = `
             <div class="section-header"><h2>${schoolData.aboutPage.leadership.heading}</h2></div>
-            <div class="features-grid">
+            <div class="features-grid leadership-grid">
                 ${schoolData.aboutPage.leadership.members.map(member => `
-                    <div class="feature-card animate">
-                        <div class="feature-icon"><i class="${member.icon}" aria-hidden="true"></i></div>
-                        <h3>${member.name}</h3>
-                        <p><strong>${member.position}</strong></p>
-                        <p>${member.bio}</p>
+                    <div class="feature-card leadership-card animate">
+                        <div class="leadership-image-wrapper">
+                            ${member.image ? `<img src="${member.image}" alt="${member.name}" class="leadership-img" onerror="handleImageError(this)">` : `<div class="feature-icon"><i class="${member.icon}" aria-hidden="true"></i></div>`}
+                        </div>
+                        <div class="leadership-details">
+                            <h3>${member.name}</h3>
+                            <span class="leadership-position">${member.position}</span>
+                            <p class="leadership-bio">${member.bio}</p>
+                        </div>
                     </div>
                 `).join('')}
             </div>
@@ -49,12 +53,16 @@ function loadAboutPage() {
     if (facilitiesSection) {
         facilitiesSection.innerHTML = `
             <div class="section-header"><h2>${schoolData.aboutPage.facilities.heading}</h2></div>
-            <div class="features-grid">
+            <div class="features-grid facilities-grid">
                 ${schoolData.aboutPage.facilities.items.map(facility => `
-                    <div class="feature-card animate">
-                        <div class="feature-icon"><i class="${facility.icon}" aria-hidden="true"></i></div>
-                        <h3>${facility.name}</h3>
-                        <p>${facility.description}</p>
+                    <div class="feature-card facility-card animate">
+                        <div class="facility-image-wrapper">
+                            ${facility.image ? `<img src="${facility.image}" alt="${facility.name}" class="facility-img" onerror="handleImageError(this)">` : `<div class="feature-icon"><i class="${facility.icon}" aria-hidden="true"></i></div>`}
+                        </div>
+                        <div class="facility-details">
+                            <h3>${facility.name}</h3>
+                            <p>${facility.description}</p>
+                        </div>
                     </div>
                 `).join('')}
             </div>
