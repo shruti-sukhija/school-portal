@@ -47,14 +47,19 @@ function loadAdmissionsPage() {
                         </tr>
                     </thead>
                     <tbody>
-                        ${schoolData.admissionsPage.fees.rows.map(row => `
-                            <tr>
-                                <td>${row.grade}</td>
-                                <td>${row.tuition}</td>
-                                <td>${row.development}</td>
-                                <td><strong>${row.total}</strong></td>
-                            </tr>
-                        `).join('')}
+                        ${schoolData.admissionsPage.fees.rows.map(row => {
+                            const getCell = (col) => {
+                                const key = col.toLowerCase();
+                                if (key.includes('class') || key.includes('grade')) return row.grade || '';
+                                if (key.includes('monthly')) return row.monthly || row.tuition || '';
+                                if (key.includes('reg') || key.includes('registration')) return row.registration || row.development || '';
+                                if (key.includes('tuition')) return row.tuition || '';
+                                if (key.includes('development')) return row.development || '';
+                                if (key.includes('total')) return row.total || '';
+                                return row[col] || '';
+                            };
+                            return `\n                                <tr>\n                                    ${schoolData.admissionsPage.fees.columns.map(col => `<td>${getCell(col)}</td>`).join('')}\n                                </tr>\n                            `;
+                        }).join('')}
                     </tbody>
                 </table>
             </div>

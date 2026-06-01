@@ -56,6 +56,12 @@ function loadAcademicsPage() {
                 `).join('')}
             </div>
         `;
+        // Add academics gallery (programs/clubs) if available
+        const parentSection = clubsSection.closest('section');
+        if (parentSection && !document.getElementById('academicsGallery')) {
+            parentSection.insertAdjacentHTML('afterend', `<section style="background: var(--light);"><div class="container" id="academicsGallery"></div></section>`);
+            if (window.initGallery) window.initGallery('academicsGallery', 6);
+        }
     }
 }
 

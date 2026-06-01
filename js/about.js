@@ -67,6 +67,12 @@ function loadAboutPage() {
                 `).join('')}
             </div>
         `;
+        // Append a gallery section after facilities if available
+        const parentSection = facilitiesSection.closest('section');
+        if (parentSection && !document.getElementById('aboutGallery')) {
+            parentSection.insertAdjacentHTML('afterend', `<section><div class="container" id="aboutGallery"></div></section>`);
+            if (window.initGallery) window.initGallery('aboutGallery', 8);
+        }
     }
 }
 

@@ -30,6 +30,12 @@ function loadEventsPage() {
                 </div>
             </div>
         `).join('');
+        // Add a wider events gallery showcasing more images
+        const wrapper = eventsGrid.closest('.container') || eventsGrid.parentElement;
+        if (wrapper && !document.getElementById('eventsGallery')) {
+            wrapper.insertAdjacentHTML('beforeend', `<div id="eventsGallery" style="margin-top: 40px;"></div>`);
+            if (window.initGallery) window.initGallery('eventsGallery', 10);
+        }
     }
 }
 

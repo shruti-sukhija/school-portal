@@ -54,6 +54,42 @@ const schoolData = {
         if (type === 'event') return source.events[index];
         return source.hero;
     },
+
+    // A flattened gallery image list (used for on-demand galleries).
+    // Populate with available images from the School_Images folder.
+    galleryImages: [
+        "School_Images/School_Building.jpeg",
+        "School_Images/Reception.jpeg",
+        "School_Images/NCC_Cadets.jpg.jpeg",
+        "School_Images/Library.jpeg",
+        "School_Images/Shooting_Range.jpeg",
+        "School_Images/Chairman.jpeg",
+        "School_Images/Director.jpeg",
+        "School_Images/Principal.jpeg",
+        "School_Images/Principle_Vice_Principle.jpeg",
+        "School_Images/Vice_Principal.jpeg",
+        "School_Images/Class_Rooms/IMG-20260512-WA0055(1).jpg.jpeg",
+        "School_Images/Class_Rooms/IMG-20260512-WA0063.jpg.jpeg",
+        "School_Images/Computer_Lab/IMG-20250710-WA0007(1).jpg.jpeg",
+        "School_Images/Computer_Lab/IMG-20260511-WA0053.jpg.jpeg",
+        "School_Images/Computer_Lab/IMG-20260511-WA0054.jpg.jpeg",
+        "School_Images/Ground/Ground.jpeg",
+        "School_Images/Ground/Ground 1.jpeg",
+        "School_Images/Physics_Bio_Lab_Staff_Room/IMG-20260512-WA0131(1).jpg.jpeg",
+        "School_Images/Physics_Bio_Lab_Staff_Room/IMG-20260512-WA0136.jpg.jpeg",
+        "School_Images/Physics_Bio_Lab_Staff_Room/IMG-20260512-WA0143(1).jpg.jpeg",
+        "School_Images/Play_Class_Room/IMG-20260511-WA0042.jpg.jpeg",
+        "School_Images/Play_Class_Room/IMG-20260511-WA0043.jpg.jpeg",
+        "School_Images/Play_Class_Room/IMG-20260511-WA0045.jpg.jpeg",
+        "School_Images/Robotics/IMG-20260513-WA0054.jpg.jpeg",
+        "School_Images/Robotics/IMG-20260513-WA0056.jpg.jpeg",
+        "School_Images/Robotics/IMG-20260513-WA0063.jpg.jpeg",
+        "School_Images/Smart_Class_Rooms/IMG-20260511-WA0057.jpg.jpeg",
+        "School_Images/Smart_Class_Rooms/IMG-20260512-WA0024(1).jpg.jpeg",
+        "School_Images/Smart_Class_Rooms/IMG-20260512-WA0042(1).jpg.jpeg",
+        "School_Images/Sports_and_Culture/IMG-20231205-WA0047.jpg.jpeg",
+        "School_Images/Sports_and_Culture/WhatsApp Image 2026-05-24 at 1.40.44 PM.jpeg"
+    ],
     
     hero: {
         title: "Dev Rishi International School",
@@ -125,8 +161,8 @@ const schoolData = {
             members: [
                 { name: "Subhash Chaudhary", position: "Chairman", bio: "Providing visionary leadership and steering the institution towards standard academic excellence and national values.", image: "School_Images/Chairman.jpeg", icon: "fas fa-user-tie" },
                 { name: "Mayank Chaudhary", position: "Director", bio: "Driving modern operational strategies, smart infrastructure, and dynamic technology integration in sports and studies.", image: "School_Images/Director.jpeg", icon: "fas fa-user-tie" },
-                { name: "Mahak Singh", position: "Principal", bio: "M.A. Education, M.A. Hindi, B.Ed., Ph.D. (Pursuing). Over 20 years of rich academic and administrative experience leading institutions with pedagogical excellence.", image: "School_Images/Principle_Vice_Principle.jpeg", icon: "fas fa-user-tie" },
-                { name: "Ravish Chaudhary", position: "Vice Principal", bio: "Ph.D. (Education Pursuing), M.Ed., M.A. Education, M.Com. Dedicated to high standards of student discipline, teacher coordination, and modern curriculum management.", image: "School_Images/Principle_Vice_Principle.jpeg", icon: "fas fa-user-tie" }
+                { name: "Mahak Singh", position: "Principal", bio: "M.A. Education, M.A. Hindi, B.Ed., Ph.D. (Pursuing). Over 20 years of rich academic and administrative experience leading institutions with pedagogical excellence.", image: "School_Images/Principal.jpeg", icon: "fas fa-user-tie" },
+                { name: "Ravish Chaudhary", position: "Vice Principal", bio: "Ph.D. (Education Pursuing), M.Ed., M.A. Education, M.Com. Dedicated to high standards of student discipline, teacher coordination, and modern curriculum management.", image: "School_Images/Vice_Principal.jpeg", icon: "fas fa-user-tie" }
             ]
         },
         facilities: {
@@ -179,14 +215,31 @@ const schoolData = {
             ]
         },
         fees: {
-            heading: "Transparent Fee Structure (Annual)",
-            columns: ["Grade Level", "Tuition Fee", "Development Fee", "Total Fee"],
+            heading: "Fee Structure",
+            columns: ["Class", "Monthly Fee", "Reg. Fee"],
             rows: [
-                { grade: "Pre-Nursery - UKG", tuition: "₹35,000", development: "₹5,000", total: "₹40,000" },
-                { grade: "Grade I - V", tuition: "₹42,000", development: "₹6,000", total: "₹48,000" },
-                { grade: "Grade VI - VIII", tuition: "₹48,000", development: "₹7,000", total: "₹55,000" },
-                { grade: "Grade IX - X", tuition: "₹55,000", development: "₹8,000", total: "₹63,000" },
-                { grade: "Grade XI - XII (All Streams)", tuition: "₹65,000", development: "₹10,000", total: "₹75,000" }
+                { grade: "PLAY", monthly: "₹1,000", registration: "₹1,000" },
+                { grade: "NURSERY", monthly: "₹1,000", registration: "₹1,000" },
+                { grade: "L.K.G.", monthly: "₹1,000", registration: "₹1,000" },
+                { grade: "U.K.G.", monthly: "₹1,000", registration: "₹1,000" },
+                { grade: "I", monthly: "₹1,300", registration: "₹1,000" },
+                { grade: "II", monthly: "₹1,300", registration: "₹1,000" },
+                { grade: "III", monthly: "₹1,300", registration: "₹1,000" },
+                { grade: "IV", monthly: "₹1,300", registration: "₹1,000" },
+                { grade: "V", monthly: "₹1,300", registration: "₹1,000" },
+                { grade: "VI", monthly: "₹1,700", registration: "₹1,000" },
+                { grade: "VII", monthly: "₹1,700", registration: "₹1,000" },
+                { grade: "VIII", monthly: "₹1,700", registration: "₹1,000" },
+                { grade: "IX", monthly: "₹2,000", registration: "₹1,000" },
+                { grade: "X", monthly: "₹2,000", registration: "₹1,000" },
+                { grade: "XI (PCM)", monthly: "₹2,500", registration: "₹1,000" },
+                { grade: "XI (COM.)", monthly: "₹2,400", registration: "₹1,000" },
+                { grade: "XI (PCB)", monthly: "₹2,500", registration: "₹1,000" },
+                { grade: "XI (HUM.)", monthly: "₹2,400", registration: "₹1,000" },
+                { grade: "XII (PCM)", monthly: "₹2,500", registration: "₹1,000" },
+                { grade: "XII (COM.)", monthly: "₹2,400", registration: "₹1,000" },
+                { grade: "XII (PCB)", monthly: "₹2,500", registration: "₹1,000" },
+                { grade: "XII (HUM.)", monthly: "₹2,400", registration: "₹1,000" }
             ]
         },
         faq: {

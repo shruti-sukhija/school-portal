@@ -68,6 +68,50 @@ function initImageErrorHandling() {
     });
 }
 
+// Image allocator for galleries — hands out unique images until exhausted
+function _shuffleArray(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+}
+
+function ImageAllocator(images) {
+    this._pool = Array.isArray(images) ? images.slice() : [];
+    _shuffleArray(this._pool);
+    this._pos = 0;
+}
+
+ImageAllocator.prototype.get = function(count) {
+    const out = [];
+    while (out.length < count && this._pos < this._pool.length) {
+        out.push(this._pool[this._pos++]);
+    }
+    return out;
+};
+
+function _renderGalleryGrid(images) {
+    return `<div class="gallery-grid">${images.map(src => `
+        <div class="gallery-item"><img src="${src}" loading="lazy" onerror="handleImageError(this)"></div>
+    `).join('')}</div>`;
+}
+
+// Public helper to initialize a gallery inside an element by id
+function initGallery(containerId, count = 6) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    const allocator = window._imageAllocator;
+    let images = [];
+    if (allocator) images = allocator.get(count);
+    if (!images || !images.length) {
+        images = (window.schoolData && window.schoolData.galleryImages) ? window.schoolData.galleryImages.slice(0, count) : [];
+    }
+    if (!images.length) return;
+    container.innerHTML = `<div class="section-header"><h2>Gallery</h2></div>` + _renderGalleryGrid(images);
+    initImageErrorHandling();
+    initAnimations();
+}
+
 // Scroll Animations — safe to call repeatedly; page loaders invoke this after injecting markup
 let _animationObserver = null;
 function initAnimations() {
@@ -258,4 +302,11 @@ document.addEventListener('DOMContentLoaded', () => {
     loadFooter();
     initAnimations();
     initImageErrorHandling();
+    // initialize global image allocator for galleries
+    try {
+        window._imageAllocator = new ImageAllocator(window.schoolData && window.schoolData.galleryImages ? window.schoolData.galleryImages : []);
+        window.initGallery = initGallery;
+    } catch (e) {
+        console.warn('Gallery allocator init failed', e);
+    }
 });
