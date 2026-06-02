@@ -300,6 +300,24 @@ function loadNavigation() {
     const mobileMenu = document.getElementById('mobileMenu');
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
 
+    const navbar = document.getElementById('navbar');
+    if (navbar && !document.getElementById('announcementBar') && window.schoolData && window.schoolData.announcements && window.schoolData.announcements.length) {
+        const bar = document.createElement('div');
+        bar.id = 'announcementBar';
+        bar.className = 'announcement-bar';
+        bar.innerHTML = `
+            <div class="ticker-wrapper container">
+                <div class="ticker-label"><i class="fas fa-bullhorn" aria-hidden="true"></i> Announcements</div>
+                <div class="ticker-content">
+                    <div class="ticker-items">
+                        ${schoolData.announcements.map(ann => `<span class="ticker-item">${ann}</span>`).join(' <i class="fas fa-star" aria-hidden="true" style="margin: 0 15px; font-size: 0.8em; color: var(--secondary);"></i> ')}
+                    </div>
+                </div>
+            </div>
+        `;
+        navbar.prepend(bar);
+    }
+
     if (navContainer) {
         navContainer.innerHTML = schoolData.navigation.map(item => {
             const isActive = currentPage === item.href;

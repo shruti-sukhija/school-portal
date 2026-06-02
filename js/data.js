@@ -11,6 +11,13 @@ const schoolData = {
     tagline: "Affiliated to CBSE, New Delhi | Established in 2015",
     established: "2015",
     
+    announcements: [
+        "Admissions open for Academic Session 2026-27! Secure a bright future for your child today.",
+        "National Cadet Corps (NCC) registration is now open for Grades VIII to XI.",
+        "Dev Rishi International School has launched a state-of-the-art Advanced Robotics & AI lab.",
+        "Indoor Shooting Range practice schedule updated for the upcoming CBSE Zonal Tournament."
+    ],
+    
     navigation: [
         { label: "Home", href: "index.html", icon: "fas fa-home" },
         { label: "About", href: "about.html", icon: "fas fa-info-circle" },
@@ -187,6 +194,20 @@ const schoolData = {
             heading: "Our Dedicated Team & Staff",
             description: "At Dev Rishi International School, our teachers, administrators, and support staff work hand-in-hand to cultivate a nurturing and supportive environment for every student. Our team brings a rich blend of experience, academic brilliance, and heart to the campus every single day.",
             image: "School_Images/Staff/CompleteStaff.jpeg"
+        },
+        disclosures: {
+            heading: "CBSE Mandatory Public Disclosures",
+            description: "In compliance with the Central Board of Secondary Education (CBSE) directives, Dev Rishi International School maintains absolute transparency by publishing official accreditation, safety compliance certificates, and administrative details.",
+            items: [
+                { title: "CBSE Affiliation Extension Letter", category: "General Info", date: "April 2025", size: "1.4 MB", link: "docs/Affiliation_Extension_Letter.pdf" },
+                { title: "Society Registration Certificate", category: "Management", date: "June 2014", size: "820 KB", link: "docs/Society_Registration_Certificate.pdf" },
+                { title: "No Objection Certificate (NOC)", category: "Government NOC", date: "December 2014", size: "910 KB", link: "docs/No_Objection_Certificate.pdf" },
+                { title: "School Building Safety Certificate", category: "Safety Compliance", date: "March 2026", size: "1.1 MB", link: "docs/Building_Safety_Certificate.pdf" },
+                { title: "Fire Safety Compliance Certificate", category: "Safety Compliance", date: "February 2026", size: "1.3 MB", link: "docs/Fire_Safety_Certificate.pdf" },
+                { title: "Water and Health Sanitation Certificate", category: "Safety Compliance", date: "April 2026", size: "640 KB", link: "docs/Water_Sanitation_Certificate.pdf" },
+                { title: "Official Fee Structure 2026-27", category: "Finance", date: "May 2026", size: "520 KB", link: "docs/Fee_Structure_2026-27.pdf" },
+                { title: "Academic Calendar & Holiday List", category: "Academic Resources", date: "May 2026", size: "980 KB", link: "docs/Academic_Calendar_2026-27.pdf" }
+            ]
         },
         facilities: {
             heading: "State-of-the-Art Facilities",

@@ -79,11 +79,43 @@ function loadAboutPage() {
                 `).join('')}
             </div>
         `;
-        // Append a gallery section after facilities if available
+        // Append CBSE Public Disclosures section dynamically if available in data
         const parentSection = facilitiesSection.closest('section');
-        if (parentSection && !document.getElementById('aboutGallery')) {
-            parentSection.insertAdjacentHTML('afterend', `<section><div class="container" id="aboutGallery"></div></section>`);
-            if (window.initGallery) window.initGallery('aboutGallery', 8);
+        if (parentSection) {
+            if (schoolData.aboutPage.disclosures && !document.getElementById('disclosureSection')) {
+                parentSection.insertAdjacentHTML('afterend', `
+                    <section style="background: var(--light);">
+                        <div class="container" id="disclosureSection">
+                            <div class="section-header">
+                                <h2>${schoolData.aboutPage.disclosures.heading}</h2>
+                                <p style="max-width: 800px; margin: 20px auto 0;">${schoolData.aboutPage.disclosures.description}</p>
+                            </div>
+                            <div class="features-grid disclosure-grid" style="grid-template-columns: repeat(auto-fit, minmax(285px, 1fr)); gap: 20px;">
+                                ${schoolData.aboutPage.disclosures.items.map(doc => `
+                                    <div class="feature-card disclosure-card animate" style="text-align: left; padding: 24px; border-radius: 12px; display: flex; flex-direction: column; justify-content: space-between; border-left: 4px solid var(--secondary);">
+                                        <div>
+                                            <span style="font-size: 0.8em; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 1px;">${doc.category}</span>
+                                            <h3 style="font-size: 1.1em; color: var(--primary); margin: 8px 0 12px; line-height: 1.4;">${doc.title}</h3>
+                                            <p style="font-size: 0.85em; color: var(--text); margin-bottom: 20px;">
+                                                <span><i class="far fa-calendar-alt" aria-hidden="true"></i> Updated: ${doc.date}</span><br>
+                                                <span><i class="far fa-file-pdf" aria-hidden="true" style="color: #dc3545;"></i> Size: ${doc.size}</span>
+                                            </p>
+                                        </div>
+                                        <a href="${doc.link}" class="apply-btn" style="text-align: center; padding: 10px 0 !important; font-size: 0.9em; display: flex; align-items: center; justify-content: center; gap: 8px; border-radius: 6px;" download>
+                                            <i class="fas fa-download" aria-hidden="true"></i> Download PDF
+                                        </a>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </section>
+                `);
+            }
+            if (!document.getElementById('aboutGallery')) {
+                const afterSection = document.getElementById('disclosureSection') ? document.getElementById('disclosureSection').closest('section') : parentSection;
+                afterSection.insertAdjacentHTML('afterend', `<section><div class="container" id="aboutGallery"></div></section>`);
+                if (window.initGallery) window.initGallery('aboutGallery', 8);
+            }
         }
     }
 }
