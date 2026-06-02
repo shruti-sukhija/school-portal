@@ -100,17 +100,23 @@ function loadAboutPage() {
         facilitiesSection.innerHTML = `
             <div class="section-header"><h2>${schoolData.aboutPage.facilities.heading}</h2></div>
             <div class="features-grid facilities-grid">
-                ${schoolData.aboutPage.facilities.items.map(facility => `
-                    <div class="feature-card facility-card animate">
-                        <div class="facility-image-wrapper">
-                            ${facility.image ? `<img src="${facility.image}" alt="${facility.name}" class="facility-img" onerror="handleImageError(this)">` : `<div class="feature-icon"><i class="${facility.icon}" aria-hidden="true"></i></div>`}
+                ${schoolData.aboutPage.facilities.items.map(facility => {
+                    const descClean = facility.description.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                    return `
+                        <div class="feature-card facility-card animate" onclick="openFacilityTourModal('${facility.name}', '${facility.image || ''}', '${descClean}')" style="cursor: pointer; position: relative;">
+                            <div class="facility-image-wrapper">
+                                ${facility.image ? `<img src="${facility.image}" alt="${facility.name}" class="facility-img" onerror="handleImageError(this)">` : `<div class="feature-icon"><i class="${facility.icon}" aria-hidden="true"></i></div>`}
+                            </div>
+                            <div class="facility-details">
+                                <h3 style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                                    <span>${facility.name}</span>
+                                    <i class="fas fa-expand-alt" style="font-size: 0.75em; color: var(--secondary); transition: transform 0.3s ease;"></i>
+                                </h3>
+                                <p>${facility.description}</p>
+                            </div>
                         </div>
-                        <div class="facility-details">
-                            <h3>${facility.name}</h3>
-                            <p>${facility.description}</p>
-                        </div>
-                    </div>
-                `).join('')}
+                    `;
+                }).join('')}
             </div>
         `;
         // Append CBSE Public Disclosures section dynamically if available in data
@@ -152,6 +158,160 @@ function loadAboutPage() {
             }
         }
     }
+}
+
+function openFacilityTourModal(name, image, description) {
+    let modal = document.getElementById('facilityTourModal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'facilityTourModal';
+        modal.className = 'lightbox-modal facility-tour-modal';
+        modal.setAttribute('role', 'dialog');
+        modal.setAttribute('aria-label', 'Facility Tour Explorer');
+        modal.setAttribute('aria-modal', 'true');
+        document.body.appendChild(modal);
+        
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeFacilityTour();
+        });
+    }
+    
+    // Dynamically pick alternate gallery folder matching category
+    let category = 'about';
+    const nameLower = name.toLowerCase();
+    if (nameLower.includes('lab') || nameLower.includes('smart') || nameLower.includes('library')) {
+        category = 'academics';
+    } else if (nameLower.includes('shooting') || nameLower.includes('sports') || nameLower.includes('playground') || nameLower.includes('ground') || nameLower.includes('robotics')) {
+        category = 'events';
+    }
+    
+    const pool = window.schoolData && window.schoolData.galleryImages && window.schoolData.galleryImages[category] 
+        ? window.schoolData.galleryImages[category] 
+        : [];
+        
+    modal.innerHTML = `
+        <button class="lightbox-close" onclick="closeFacilityTour()"><i class="fas fa-times" aria-hidden="true"></i></button>
+        <div class="facility-tour-content animate">
+            <div class="facility-tour-media-section">
+                <img id="tourMainImg" src="${image}" alt="${name}" onerror="handleImageError(this)">
+                
+                <div class="tour-thumbnails-title">Campus Alternate Views:</div>
+                <div class="tour-thumbnails-grid">
+                    <img class="tour-thumb active" src="${image}" onclick="setTourMainImage(this, '${image}')" onerror="handleImageError(this)">
+                    ${pool.slice(0, 5).map(src => {
+                        if (src.toLowerCase().endsWith('.mp4') || src === image) return '';
+                        return `<img class="tour-thumb" src="${src}" onclick="setTourMainImage(this, '${src}')" onerror="handleImageError(this)">`;
+                    }).join('')}
+                </div>
+            </div>
+            
+            <div class="facility-tour-info-section">
+                <span class="tour-tag"><i class="fas fa-school" style="color: var(--secondary); margin-right: 4px;"></i> DRIS infrastructure tour</span>
+                <h2>${name}</h2>
+                <p class="tour-desc">${description}</p>
+                
+                <div class="tour-specs-box">
+                    <h4><i class="fas fa-info-circle" style="color: var(--secondary); margin-right: 6px;"></i> Technical Specifications:</h4>
+                    <div class="tour-specs-grid">
+                        ${getFacilitySpecsHTML(name)}
+                    </div>
+                </div>
+                
+                <a href="admissions.html" class="apply-btn" style="text-align: center; border: none; cursor: pointer; color: white !important; margin-top: auto; border-radius: 8px;">Explore DRIS Admissions</a>
+            </div>
+        </div>
+    `;
+    
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden'; // Lock background scroll
+    
+    // Trigger slide entrance after render
+    setTimeout(() => {
+        const content = modal.querySelector('.facility-tour-content');
+        if (content) content.classList.add('show');
+    }, 50);
+}
+window.openFacilityTourModal = openFacilityTourModal;
+
+function setTourMainImage(thumbElement, src) {
+    const mainImg = document.getElementById('tourMainImg');
+    if (mainImg) {
+        mainImg.src = src;
+    }
+    
+    // Toggle active border ring on thumbnails
+    const thumbs = document.querySelectorAll('.tour-thumb');
+    thumbs.forEach(t => t.classList.remove('active'));
+    if (thumbElement) thumbElement.classList.add('active');
+}
+window.setTourMainImage = setTourMainImage;
+
+function closeFacilityTour() {
+    const modal = document.getElementById('facilityTourModal');
+    if (modal) {
+        modal.classList.remove('active');
+        const content = modal.querySelector('.facility-tour-content');
+        if (content) content.classList.remove('show');
+        document.body.style.overflow = '';
+    }
+}
+window.closeFacilityTour = closeFacilityTour;
+
+function getFacilitySpecsHTML(name) {
+    const nameLower = name.toLowerCase();
+    
+    let specs = [];
+    if (nameLower.includes('shooting')) {
+        specs = [
+            { key: "Target Lanes", val: "6 Professional Lanes" },
+            { key: "Target Distance", val: "10 Meters (ISSF Standard)" },
+            { key: "Equipment", val: "Imported German Rifles & Match Pistols" },
+            { key: "Safety Protocols", val: "Soundproof acoustic panels & double ventilation backing" }
+        ];
+    } else if (nameLower.includes('robotics')) {
+        specs = [
+            { key: "Lab Platform", val: "AI, IoT & Microcontroller Sandbox" },
+            { key: "Hardware Blocks", val: "Arduino boards, Raspberry Pi controllers, circuit sensors" },
+            { key: "Integrated Software", val: "Python consoles, Scratch visual blocks, Arduino IDE" },
+            { key: "Focus Outcomes", val: "Autonomous navigation, circuitry engineering, coding reasoning" }
+        ];
+    } else if (nameLower.includes('smart')) {
+        specs = [
+            { key: "Display Units", val: "86-inch 4K Interactive Flat Panels" },
+            { key: "Audio System", val: "Dynamic surround sound with wireless mic receivers" },
+            { key: "Study Library", val: "CBSE animated whiteboards library, integrated quiz widgets" },
+            { key: "Capabilities", val: "Real-time concept illustrations, dynamic lessons record" }
+        ];
+    } else if (nameLower.includes('labs') || nameLower.includes('science')) {
+        specs = [
+            { key: "Lab Layout", val: "Composite Physics, Chemistry & Biology modules" },
+            { key: "Capacity", val: "40+ students simultaneously per session" },
+            { key: "Stock Equipment", val: "Compound microscopes, optical benches, standard chemical sets" },
+            { key: "Safety Features", val: "Fume hood exhaust ventilation, immediate eye wash taps" }
+        ];
+    } else if (nameLower.includes('computer')) {
+        specs = [
+            { key: "Terminal Count", val: "High-speed modern desktop units" },
+            { key: "Connection", val: "Secure internet grid with content firewalls" },
+            { key: "Syllabus Focus", val: "Python coding, web layouts, basic smart computer operation" },
+            { key: "Environment", val: "Centralized air-conditioning & power backup grids" }
+        ];
+    } else {
+        // Fallback for standard facilities
+        specs = [
+            { key: "Maintenance", val: "Supervised daily housekeeping sanitations" },
+            { key: "Accreditation", val: "CBSE infrastructure layout directives fully compliant" },
+            { key: "Access Limits", val: "Monitored security entries & teacher supervisor checks" },
+            { key: "Campus Safety", val: "24/7 active CCTV camera coverage" }
+        ];
+    }
+    
+    return specs.map(s => `
+        <div style="border-bottom: 1px solid rgba(0,0,0,0.06); padding: 8px 0; display: flex; justify-content: space-between; font-size: 0.85em; gap: 15px;">
+            <strong style="color: var(--primary); text-align: left;">${s.key}:</strong>
+            <span style="color: var(--text); text-align: right;">${s.val}</span>
+        </div>
+    `).join('');
 }
 
 document.addEventListener('DOMContentLoaded', () => {

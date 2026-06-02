@@ -626,6 +626,213 @@ function initCopyToClipboard() {
 // Immediately initialize theme state during parsing to prevent visual flashing
 initTheme();
 
+// Branded Help Desk Assistant (Global Floating Chat Widget)
+function initHelpDesk() {
+    if (document.getElementById('helpDeskBadge')) return;
+    
+    // Inject Help Desk Badge and Panel
+    const helpContainer = document.createElement('div');
+    helpContainer.id = 'helpDeskContainer';
+    helpContainer.className = 'help-desk-container';
+    helpContainer.innerHTML = `
+        <button id="helpDeskBadge" class="help-desk-badge" aria-label="Open Campus Help Desk" type="button">
+            <i class="fas fa-headset" aria-hidden="true"></i>
+            <span class="badge-ping"></span>
+        </button>
+        <div id="helpDeskPanel" class="help-desk-panel">
+            <div class="chat-header">
+                <div class="chat-operator-avatar">
+                    <i class="fas fa-graduation-cap" aria-hidden="true"></i>
+                </div>
+                <div style="text-align: left; flex: 1;">
+                    <strong style="display: block; font-size: 0.95em;">DRIS Help Desk</strong>
+                    <div class="chat-status-indicator" id="chatStatusText" style="font-size: 0.75em; font-weight: 600; display: flex; align-items: center; gap: 5px; margin-top: 2px;">
+                        <span class="status-indicator-dot"></span> Loading...
+                    </div>
+                </div>
+                <button class="chat-panel-close" aria-label="Close help desk" onclick="toggleHelpDeskPanel()"><i class="fas fa-times" aria-hidden="true"></i></button>
+            </div>
+            <div class="chat-feed" id="chatFeed">
+                <div class="chat-msg operator">
+                    <p>Namaste! Welcome to Dev Rishi International School. I am your campus assistant. How can I help you today?</p>
+                </div>
+            </div>
+            <div class="chat-pills-container" id="chatPills">
+                <button class="chat-pill" onclick="askHelpDesk(0)" type="button">How do I apply for admission?</button>
+                <button class="chat-pill" onclick="askHelpDesk(1)" type="button">Show me school tuition fees</button>
+                <button class="chat-pill" onclick="askHelpDesk(2)" type="button">Is the office open right now?</button>
+                <button class="chat-pill" onclick="askHelpDesk(3)" type="button">Tell me about the NCC wing & sports</button>
+                <button class="chat-pill" onclick="askHelpDesk(4)" type="button">Where is the campus located?</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(helpContainer);
+    
+    const badge = document.getElementById('helpDeskBadge');
+    if (badge) badge.addEventListener('click', toggleHelpDeskPanel);
+    
+    // Live update help desk status bar based on office open hours
+    updateChatStatusHeader();
+}
+
+function updateChatStatusHeader() {
+    const statusText = document.getElementById('chatStatusText');
+    if (!statusText) return;
+    
+    const now = new Date();
+    const day = now.getDay();
+    const hour = now.getHours();
+    const min = now.getMinutes();
+    
+    const isSunday = day === 0;
+    const timeInMinutes = hour * 60 + min;
+    const openTime = 8 * 60; // 8:00 AM
+    const closeTime = 14 * 60; // 2:00 PM
+    
+    let isOpen = false;
+    if (!isSunday && timeInMinutes >= openTime && timeInMinutes < closeTime) {
+        isOpen = true;
+    }
+    
+    const dot = statusText.querySelector('.status-indicator-dot');
+    if (isOpen) {
+        statusText.innerHTML = `<span class="status-indicator-dot" style="width: 8px; height: 8px; border-radius: 50%; display: inline-block; background: %2325d366; background-color: #25d366; box-shadow: 0 0 8px #25d366;"></span> Support Active (Online)`;
+        statusText.style.color = '#25d366';
+    } else {
+        statusText.innerHTML = `<span class="status-indicator-dot" style="width: 8px; height: 8px; border-radius: 50%; display: inline-block; background: %23ff9f43; background-color: #ff9f43;"></span> Office Offline (Leave message)`;
+        statusText.style.color = '#ff9f43';
+    }
+}
+
+function toggleHelpDeskPanel() {
+    const panel = document.getElementById('helpDeskPanel');
+    const badge = document.getElementById('helpDeskBadge');
+    if (panel) {
+        panel.classList.toggle('active');
+        if (panel.classList.contains('active')) {
+            const feed = document.getElementById('chatFeed');
+            if (feed) feed.scrollTop = feed.scrollHeight;
+            if (badge) {
+                const ping = badge.querySelector('.badge-ping');
+                if (ping) ping.style.display = 'none'; // Dismiss ping notification when opened
+            }
+        }
+    }
+}
+window.toggleHelpDeskPanel = toggleHelpDeskPanel;
+
+function askHelpDesk(idx) {
+    const feed = document.getElementById('chatFeed');
+    const pillsContainer = document.getElementById('chatPills');
+    if (!feed || !pillsContainer) return;
+    
+    const questions = [
+        "How do I apply for admission?",
+        "Show me school tuition fees",
+        "Is the office open right now?",
+        "Tell me about the NCC wing & sports",
+        "Where is the campus located?"
+    ];
+    
+    // Temporarily hide pills to prevent spamming
+    pillsContainer.style.pointerEvents = 'none';
+    pillsContainer.style.opacity = '0.5';
+    
+    // Push visitor question bubble
+    const userMsg = document.createElement('div');
+    userMsg.className = 'chat-msg visitor';
+    userMsg.innerHTML = `<p>${questions[idx]}</p>`;
+    feed.appendChild(userMsg);
+    feed.scrollTop = feed.scrollHeight;
+    
+    // Push Typing Indicator
+    const typingIndicator = document.createElement('div');
+    typingIndicator.className = 'chat-msg operator typing';
+    typingIndicator.id = 'chatTypingIndicator';
+    typingIndicator.innerHTML = `
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+    `;
+    feed.appendChild(typingIndicator);
+    feed.scrollTop = feed.scrollHeight;
+    
+    setTimeout(() => {
+        // Remove typing indicator
+        const indicator = document.getElementById('chatTypingIndicator');
+        if (indicator) indicator.remove();
+        
+        // Formulate dynamic answers
+        let answer = '';
+        if (idx === 0) {
+            answer = `
+                <p>Applying is easy! Dev Rishi admissions are open for Play up to XII (Session 2026-27). Here are the steps:</p>
+                <ol style="margin-left: 15px; margin-top: 8px; font-size: 0.9em; display: grid; gap: 4px; padding-left: 5px;">
+                    <li>Collect application form from the Sarsawa Road campus.</li>
+                    <li>Submit ID proof, passport photos, and transfer certificates.</li>
+                    <li>Take a diagnostic entry test (Class I+).</li>
+                    <li>Meet the Principal for final approval.</li>
+                </ol>
+                <a href="admissions.html" class="apply-btn" style="padding: 6px 14px !important; font-size: 0.85em; display: inline-block; margin-top: 8px; border: none; cursor: pointer; color: white !important;">Admissions Portal</a>
+            `;
+        } else if (idx === 1) {
+            answer = `
+                <p>Tuition fees at DRIS are highly competitive, starting at just ₹1,000/month for pre-primary classes.</p>
+                <p style="margin-top: 5px;">We have a <strong>Dynamic Annual Fee Estimator</strong> ready on our admissions page! You can toggle transport, NCC uniforms, and choose specific grades to calculate exact totals instantly.</p>
+                <a href="admissions.html#feesSection" class="apply-btn" style="padding: 6px 14px !important; font-size: 0.85em; display: inline-block; margin-top: 8px; border: none; cursor: pointer; color: white !important;">Calculate My Fees</a>
+            `;
+        } else if (idx === 2) {
+            // Check dynamic office hours status
+            const now = new Date();
+            const day = now.getDay();
+            const hour = now.getHours();
+            const min = now.getMinutes();
+            const isSunday = day === 0;
+            const timeInMinutes = hour * 60 + min;
+            const openTime = 8 * 60;
+            const closeTime = 14 * 60;
+            
+            let status = "";
+            if (isSunday) {
+                status = "Closed for Sunday. Our administrative team will return on Monday morning at 8:00 AM.";
+            } else if (timeInMinutes >= openTime && timeInMinutes < closeTime) {
+                status = "Open Now! You are welcome to visit our reception or dial +91 7037535234 to connect with us immediately.";
+            } else {
+                status = "Closed. Our standard working hours are Monday - Saturday, 8:00 AM - 2:00 PM.";
+            }
+            
+            answer = `<p><strong>Office Status:</strong> ${status}</p>`;
+        } else if (idx === 3) {
+            answer = `
+                <p>We believe in character development! Dev Rishi offers outstanding co-curricular facilities:</p>
+                <ul style="margin-left: 15px; margin-top: 8px; font-size: 0.9em; display: grid; gap: 4px; padding-left: 5px;">
+                    <li><strong>NCC Cadets Wing:</strong> Official drill training, social campaigns, and camp exercises.</li>
+                    <li><strong>Indoor Shooting Range:</strong> State-of-the-art rifle and pistol lanes for concentration and zonal tournaments.</li>
+                    <li><strong>Advanced Robotics Lab:</strong> AI clubs, circuitry, and hands-on mechanical designs.</li>
+                </ul>
+            `;
+        } else if (idx === 4) {
+            answer = `
+                <p>Our beautiful campus is located in Saharanpur, Uttar Pradesh.</p>
+                <p style="margin-top: 5px;"><strong>Address:</strong> Nakur Sarsawa Road, only 3 km from Nakur.</p>
+                <p style="margin-top: 5px;">You can view the campus map and generate driving routes from your exact starting city using our Location Assistant!</p>
+                <a href="contact.html#contactMapContainer" class="apply-btn" style="padding: 6px 14px !important; font-size: 0.85em; display: inline-block; margin-top: 8px; border: none; cursor: pointer; color: white !important;">Campus Map & Route</a>
+            `;
+        }
+        
+        const responseMsg = document.createElement('div');
+        responseMsg.className = 'chat-msg operator';
+        responseMsg.innerHTML = answer;
+        feed.appendChild(responseMsg);
+        feed.scrollTop = feed.scrollHeight;
+        
+        // Re-enable pills
+        pillsContainer.style.pointerEvents = 'auto';
+        pillsContainer.style.opacity = '1';
+    }, 900);
+}
+window.askHelpDesk = askHelpDesk;
+
 // Initialize Common Elements
 document.addEventListener('DOMContentLoaded', () => {
     loadNavigation();
@@ -636,6 +843,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initInquiryBadge();
     initLiveOfficeHours();
     initCopyToClipboard();
+    initHelpDesk();
     
     // initialize global image allocator for galleries
     try {

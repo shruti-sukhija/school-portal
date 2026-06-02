@@ -28,6 +28,75 @@ function loadHomePage() {
                 <span class="stat-label">${stat.label}</span>
             </div>
         `).join('');
+
+        // Prepend our premium Admissions Countdown and Seat Tracker Bar
+        if (!document.getElementById('admissionsCountdownBanner')) {
+            const countdownHTML = `
+                <div id="admissionsCountdownBanner" class="countdown-banner container animate" style="margin-top: 50px;">
+                    <div class="countdown-grid-container">
+                        <div class="countdown-info-text">
+                            <h3><i class="fas fa-clock" style="color: var(--secondary); margin-right: 6px;"></i> Admissions Enrollment Countdown</h3>
+                            <p>Seats are filling up quickly for the 2026-2027 academic session. Secure your child's seat before final late-registration closure.</p>
+                            
+                            <div class="countdown-occupancy-wrapper" style="margin-top: 15px;">
+                                <div style="display: flex; justify-content: space-between; font-size: 0.85em; font-weight: 700; color: var(--primary); margin-bottom: 6px;">
+                                    <span>Seat Occupancy Rate:</span>
+                                    <span style="color: var(--accent);">92% Filled (18 vacancies remaining)</span>
+                                </div>
+                                <div class="occupancy-track-bar">
+                                    <div class="occupancy-fill-bar"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="countdown-clocks-wrapper">
+                            <div class="clock-circle-item">
+                                <svg class="clock-svg" viewBox="0 0 100 100">
+                                    <circle class="clock-bg" cx="50" cy="50" r="42"></circle>
+                                    <circle class="clock-progress" id="countdownCircleDays" cx="50" cy="50" r="42" style="stroke-dasharray: 264; stroke-dashoffset: 0;"></circle>
+                                </svg>
+                                <div class="clock-val-container">
+                                    <span id="countdownDays" class="clock-val">00</span>
+                                    <span class="clock-unit">Days</span>
+                                </div>
+                            </div>
+                            <div class="clock-circle-item">
+                                <svg class="clock-svg" viewBox="0 0 100 100">
+                                    <circle class="clock-bg" cx="50" cy="50" r="42"></circle>
+                                    <circle class="clock-progress" id="countdownCircleHours" cx="50" cy="50" r="42" style="stroke-dasharray: 264; stroke-dashoffset: 0;"></circle>
+                                </svg>
+                                <div class="clock-val-container">
+                                    <span id="countdownHours" class="clock-val">00</span>
+                                    <span class="clock-unit">Hours</span>
+                                </div>
+                            </div>
+                            <div class="clock-circle-item">
+                                <svg class="clock-svg" viewBox="0 0 100 100">
+                                    <circle class="clock-bg" cx="50" cy="50" r="42"></circle>
+                                    <circle class="clock-progress" id="countdownCircleMins" cx="50" cy="50" r="42" style="stroke-dasharray: 264; stroke-dashoffset: 0;"></circle>
+                                </svg>
+                                <div class="clock-val-container">
+                                    <span id="countdownMins" class="clock-val">00</span>
+                                    <span class="clock-unit">Mins</span>
+                                </div>
+                            </div>
+                            <div class="clock-circle-item">
+                                <svg class="clock-svg" viewBox="0 0 100 100">
+                                    <circle class="clock-bg" cx="50" cy="50" r="42"></circle>
+                                    <circle class="clock-progress" id="countdownCircleSecs" cx="50" cy="50" r="42" style="stroke-dasharray: 264; stroke-dashoffset: 0;"></circle>
+                                </svg>
+                                <div class="clock-val-container">
+                                    <span id="countdownSecs" class="clock-val">00</span>
+                                    <span class="clock-unit">Secs</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            statsSection.insertAdjacentHTML('beforebegin', countdownHTML);
+            initAdmissionsTimer();
+        }
     }
 
     const featuresSection = document.getElementById('featuresSection');
@@ -242,6 +311,62 @@ function dismissAdmissionsAlert() {
     }
 }
 window.dismissAdmissionsAlert = dismissAdmissionsAlert;
+
+function initAdmissionsTimer() {
+    // Target admissions late-registration closure: July 31, 2026
+    const targetDate = new Date("July 31, 2026 23:59:59").getTime();
+    
+    const daysCircle = document.getElementById('countdownCircleDays');
+    const hoursCircle = document.getElementById('countdownCircleHours');
+    const minsCircle = document.getElementById('countdownCircleMins');
+    const secsCircle = document.getElementById('countdownCircleSecs');
+    
+    const daysText = document.getElementById('countdownDays');
+    const hoursText = document.getElementById('countdownHours');
+    const minsText = document.getElementById('countdownMins');
+    const secsText = document.getElementById('countdownSecs');
+    
+    const circ = 264; // Circumference matching r=42 SVG track circles (2 * PI * 42 = 263.89)
+    
+    function updateClocks() {
+        const now = new Date().getTime();
+        const diff = targetDate - now;
+        
+        if (diff <= 0) {
+            if (daysText) daysText.textContent = "00";
+            if (hoursText) hoursText.textContent = "00";
+            if (minsText) minsText.textContent = "00";
+            if (secsText) secsText.textContent = "00";
+            return;
+        }
+        
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const secs = Math.floor((diff % (1000 * 60)) / 1000);
+        
+        if (daysText) daysText.textContent = String(days).padStart(2, '0');
+        if (hoursText) hoursText.textContent = String(hours).padStart(2, '0');
+        if (minsText) minsText.textContent = String(mins).padStart(2, '0');
+        if (secsText) secsText.textContent = String(secs).padStart(2, '0');
+        
+        // Days remaining out of maximum 60 days in our countdown loop
+        const daysPercent = Math.min(days / 60, 1);
+        if (daysCircle) daysCircle.style.strokeDashoffset = String(circ - (daysPercent * circ));
+        
+        const hoursPercent = hours / 24;
+        if (hoursCircle) hoursCircle.style.strokeDashoffset = String(circ - (hoursPercent * circ));
+        
+        const minsPercent = mins / 60;
+        if (minsCircle) minsCircle.style.strokeDashoffset = String(circ - (minsPercent * circ));
+        
+        const secsPercent = secs / 60;
+        if (secsCircle) secsCircle.style.strokeDashoffset = String(circ - (secsPercent * circ));
+    }
+    
+    updateClocks();
+    setInterval(updateClocks, 1000);
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     loadHomePage();
