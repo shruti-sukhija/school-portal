@@ -135,20 +135,20 @@ function loadAboutPage() {
                                                 <span><i class="far fa-file-pdf" aria-hidden="true" style="color: #dc3545;"></i> Size: ${doc.size}</span>
                                             </p>
                                         </div>
-                                        <a href="${doc.link}" class="apply-btn" style="text-align: center; padding: 10px 0 !important; font-size: 0.9em; display: flex; align-items: center; justify-content: center; gap: 8px; border-radius: 6px;" download>
-                                            <i class="fas fa-download" aria-hidden="true"></i> Download PDF
-                                        </a>
+                                        <div style="display: flex; gap: 10px; margin-top: 15px;">
+                                            <button onclick="openLightbox('${doc.link}', 'pdf')" class="apply-btn" style="flex: 1; text-align: center; padding: 10px 0 !important; font-size: 0.9em; display: flex; align-items: center; justify-content: center; gap: 8px; border-radius: 6px; cursor: pointer; border: none;">
+                                                <i class="fas fa-eye" aria-hidden="true"></i> View Online
+                                            </button>
+                                            <a href="${doc.link}" class="apply-btn" style="width: 44px; display: flex; align-items: center; justify-content: center; border-radius: 6px; background: var(--accent); padding: 0 !important; border: none; cursor: pointer;" download title="Download PDF" aria-label="Download PDF">
+                                                <i class="fas fa-download" aria-hidden="true"></i>
+                                            </a>
+                                        </div>
                                     </div>
                                 `).join('')}
                             </div>
                         </div>
                     </section>
                 `);
-            }
-            if (!document.getElementById('aboutGallery')) {
-                const afterSection = document.getElementById('disclosureSection') ? document.getElementById('disclosureSection').closest('section') : parentSection;
-                afterSection.insertAdjacentHTML('afterend', `<section><div class="container" id="aboutGallery"></div></section>`);
-                if (window.initGallery) window.initGallery('aboutGallery', 8);
             }
         }
     }

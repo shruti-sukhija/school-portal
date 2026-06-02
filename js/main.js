@@ -131,6 +131,8 @@ function openLightbox(src, type) {
     const content = document.getElementById('lightboxContent');
     if (type === 'video') {
         content.innerHTML = `<video src="${src}" controls autoplay loop playsinline class="lightbox-media"></video>`;
+    } else if (type === 'pdf') {
+        content.innerHTML = `<iframe src="${src}" class="lightbox-media lightbox-iframe" title="Document Preview"></iframe>`;
     } else {
         content.innerHTML = `<img src="${src}" alt="Full view" class="lightbox-media" onerror="handleImageError(this)">`;
     }
@@ -387,12 +389,87 @@ function loadFooter() {
     `;
 }
 
+// Preloader setup (injects immediately as script parses, before assets block rendering)
+(function() {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        return;
+    }
+    const loader = document.createElement('div');
+    loader.className = 'preloader';
+    loader.id = 'sitePreloader';
+    loader.innerHTML = `
+        <div class="preloader-emblem">
+            <i class="fas fa-graduation-cap" aria-hidden="true"></i>
+        </div>
+        <div class="preloader-spinner"></div>
+        <div class="preloader-text">Dev Rishi Int. School</div>
+    `;
+    document.body.appendChild(loader);
+
+    const fadeOut = () => {
+        loader.classList.add('fade-out');
+        setTimeout(() => {
+            if (loader.parentNode) loader.parentNode.removeChild(loader);
+        }, 600);
+    };
+
+    window.addEventListener('load', fadeOut);
+    // Timeout backup (2.5s max)
+    setTimeout(() => {
+        if (document.getElementById('sitePreloader')) fadeOut();
+    }, 2500);
+})();
+
+// Smart scroll triggers (Navbar hide-reveal & Back-to-Top show)
+function initSmartScroll() {
+    let lastScrollY = window.scrollY;
+    const threshold = 8;
+    
+    // Inject Back-to-Top button
+    const topBtn = document.createElement('button');
+    topBtn.className = 'back-to-top';
+    topBtn.id = 'backToTopBtn';
+    topBtn.setAttribute('aria-label', 'Scroll back to top');
+    topBtn.innerHTML = `<i class="fas fa-chevron-up" aria-hidden="true"></i>`;
+    document.body.appendChild(topBtn);
+
+    topBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    window.addEventListener('scroll', () => {
+        const currentScrollY = window.scrollY;
+        const navbar = document.getElementById('navbar');
+        
+        // Back-to-top visibility
+        if (currentScrollY > 300) {
+            topBtn.classList.add('active');
+        } else {
+            topBtn.classList.remove('active');
+        }
+
+        // Smart navbar hide/reveal
+        if (navbar) {
+            if (Math.abs(currentScrollY - lastScrollY) >= threshold) {
+                if (currentScrollY > lastScrollY && currentScrollY > 150) {
+                    navbar.classList.add('nav-hidden');
+                } else {
+                    navbar.classList.remove('nav-hidden');
+                }
+                lastScrollY = currentScrollY;
+            }
+        }
+    }, { passive: true });
+}
+
 // Initialize Common Elements
 document.addEventListener('DOMContentLoaded', () => {
     loadNavigation();
     loadFooter();
     initAnimations();
     initImageErrorHandling();
+    initSmartScroll();
+    
     // initialize global image allocator for galleries
     try {
         window._imageAllocator = new ImageAllocator(window.schoolData && window.schoolData.galleryImages ? window.schoolData.galleryImages : []);

@@ -101,19 +101,116 @@ function loadHomePage() {
                 <h2>${schoolData.testimonials.heading}</h2>
                 <p>${schoolData.testimonials.subheading}</p>
             </div>
-            <div class="testimonial-grid">
-                ${schoolData.testimonials.items.map(testimonial => `
-                    <div class="testimonial-card animate">
-                        <p class="testimonial-text">"${testimonial.text}"</p>
-                        <div class="testimonial-author">
-                            <div class="author-avatar">${testimonial.initials}</div>
-                            <div><strong>${testimonial.name}</strong><br><small>${testimonial.role}</small></div>
+            <div class="testimonial-carousel-container animate" id="testimonialCarousel">
+                <div class="testimonial-slider" id="testimonialSlider">
+                    ${schoolData.testimonials.items.map((testimonial, idx) => `
+                        <div class="testimonial-slide ${idx === 0 ? 'active-slide' : ''}" data-index="${idx}">
+                            <div class="testimonial-card" style="margin: 0 auto; max-width: 800px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); padding: 35px 25px; border-radius: 15px;">
+                                <p class="testimonial-text" style="font-size: 1.15em; line-height: 1.8; text-align: center; color: rgba(255,255,255,0.95); font-style: italic;">"${testimonial.text}"</p>
+                                <div class="testimonial-author" style="justify-content: center; margin-top: 25px; gap: 15px; display: flex; align-items: center;">
+                                    <div class="author-avatar" style="border: 2px solid var(--secondary); background: var(--secondary); color: var(--primary); font-weight: 700;">${testimonial.initials}</div>
+                                    <div style="text-align: left;"><strong>${testimonial.name}</strong><br><small style="color: rgba(255,255,255,0.7); font-size: 0.8em; font-weight: 500;">${testimonial.role}</small></div>
+                                </div>
+                            </div>
                         </div>
+                    `).join('')}
+                </div>
+                
+                <div class="testimonial-carousel-controls">
+                    <button class="carousel-arrow" id="prevSlide" aria-label="Previous parent review" type="button"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+                    <div class="carousel-dots" id="carouselDots">
+                        ${schoolData.testimonials.items.map((_, idx) => `
+                            <button class="carousel-dot ${idx === 0 ? 'active' : ''}" data-index="${idx}" aria-label="Go to slide ${idx + 1}" type="button"></button>
+                        `).join('')}
                     </div>
-                `).join('')}
+                    <button class="carousel-arrow" id="nextSlide" aria-label="Next parent review" type="button"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
+                </div>
             </div>
         `;
+
+        initTestimonialCarousel();
     }
+}
+
+function initTestimonialCarousel() {
+    const slider = document.getElementById('testimonialSlider');
+    const slides = document.querySelectorAll('.testimonial-slide');
+    const dots = document.querySelectorAll('.carousel-dot');
+    const prevBtn = document.getElementById('prevSlide');
+    const nextBtn = document.getElementById('nextSlide');
+    const carouselContainer = document.getElementById('testimonialCarousel');
+    
+    if (!slider || !slides.length) return;
+    
+    let currentIndex = 0;
+    let autoPlayTimer = null;
+    const totalSlides = slides.length;
+    
+    function goToSlide(index) {
+        if (index < 0) index = totalSlides - 1;
+        if (index >= totalSlides) index = 0;
+        
+        currentIndex = index;
+        
+        // Toggle active slide visibility class
+        slides.forEach((slide, idx) => {
+            if (idx === currentIndex) {
+                slide.classList.add('active-slide');
+            } else {
+                slide.classList.remove('active-slide');
+            }
+        });
+        
+        // Shift slider position
+        slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+        
+        // Update dots state
+        dots.forEach((dot, idx) => {
+            if (idx === currentIndex) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+    }
+    
+    function startAutoPlay() {
+        stopAutoPlay();
+        autoPlayTimer = setInterval(() => {
+            goToSlide(currentIndex + 1);
+        }, 6000);
+    }
+    
+    function stopAutoPlay() {
+        if (autoPlayTimer) {
+            clearInterval(autoPlayTimer);
+            autoPlayTimer = null;
+        }
+    }
+    
+    if (prevBtn) prevBtn.addEventListener('click', () => {
+        goToSlide(currentIndex - 1);
+        startAutoPlay();
+    });
+    
+    if (nextBtn) nextBtn.addEventListener('click', () => {
+        goToSlide(currentIndex + 1);
+        startAutoPlay();
+    });
+    
+    dots.forEach((dot, idx) => {
+        dot.addEventListener('click', () => {
+            goToSlide(idx);
+            startAutoPlay();
+        });
+    });
+    
+    if (carouselContainer) {
+        carouselContainer.addEventListener('mouseenter', stopAutoPlay);
+        carouselContainer.addEventListener('mouseleave', startAutoPlay);
+    }
+    
+    startAutoPlay();
 }
 
 document.addEventListener('DOMContentLoaded', () => {

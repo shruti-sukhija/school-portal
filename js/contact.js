@@ -45,6 +45,31 @@ function loadContactPage() {
                 </form>
             </div>
         `;
+
+        // Append interactive Google Maps container
+        const sectionContainer = contactGrid.closest('.container') || contactGrid.parentElement;
+        if (sectionContainer && !document.getElementById('contactMapContainer')) {
+            sectionContainer.insertAdjacentHTML('beforeend', `
+                <div id="contactMapContainer" class="animate" style="margin-top: 50px;">
+                    <div class="section-header" style="margin-bottom: 25px;">
+                        <h2>Our Location</h2>
+                        <p>Situated in Saharanpur, only 3 km from Nakur on Sarsawa Road. Visit our secure green campus today.</p>
+                    </div>
+                    <div style="width: 100%; height: 400px; border-radius: 20px; overflow: hidden; border: 4px solid var(--secondary); box-shadow: var(--shadow); background: var(--light);">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3447.1611081533967!2d77.3135542!3d30.2323719!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ee5877864dd1f%3A0xe9ce64e48b8fe1d9!2sNakur%20Sarsawa%20Rd%2C%20Uttar%20Pradesh%20247341!5e0!3m2!1sen!2sin!4v1717286100000!5m2!1sen!2sin" 
+                            width="100%" 
+                            height="100%" 
+                            style="border: 0; display: block;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade"
+                            title="Dev Rishi International School Nakur Campus Location Map">
+                        </iframe>
+                    </div>
+                </div>
+            `);
+        }
     }
 }
 

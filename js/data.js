@@ -23,6 +23,7 @@ const schoolData = {
         { label: "About", href: "about.html", icon: "fas fa-info-circle" },
         { label: "Academics", href: "academics.html", icon: "fas fa-book" },
         { label: "Admissions", href: "admissions.html", icon: "fas fa-user-plus" },
+        { label: "Gallery", href: "gallery.html", icon: "fas fa-images" },
         { label: "Events", href: "events.html", icon: "fas fa-calendar" },
         { label: "Contact", href: "contact.html", icon: "fas fa-envelope" }
     ],
@@ -77,8 +78,8 @@ const schoolData = {
             "School_Images/Play_Class_Room/IMG-20260511-WA0046.jpg.jpeg",
             "School_Images/Play_Class_Room/IMG-20260511-WA0047.jpg.jpeg",
             "School_Images/Ground/Ground 1.jpeg",
-            "School_Images/Ground/20260511_170659.heic",
-            "School_Images/Ground/20260511_170723.heic"
+            "School_Images/Ground/20260511_170659.jpg",
+            "School_Images/Ground/20260511_170723.jpg"
         ],
         academics: [
             "School_Images/Computer_Lab/IMG-20250710-WA0007(1).jpg.jpeg",
@@ -350,6 +351,7 @@ const schoolData = {
             { text: "About Us", href: "about.html" },
             { text: "Academics", href: "academics.html" },
             { text: "Admissions", href: "admissions.html" },
+            { text: "Gallery", href: "gallery.html" },
             { text: "News & Events", href: "events.html" },
             { text: "Contact Us", href: "contact.html" }
         ] },
