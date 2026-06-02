@@ -2,7 +2,7 @@
 // MAIN JAVASCRIPT - Common Functions
 // ============================================
 
-const DEFAULT_FALLBACK_IMAGE = "https://images.unsplash.com/photo-1562774053-701939374585?w=800";
+const DEFAULT_FALLBACK_IMAGE = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'><rect width='100%' height='100%' fill='%231a3a5c'/><circle cx='400' cy='260' r='60' fill='%23e8a817' opacity='0.15'/><path d='M380 230 L420 230 L400 280 Z' fill='%23e8a817'/><text x='50%' y='390' font-family='system-ui, -apple-system, sans-serif' font-size='26' font-weight='bold' fill='%23e8a817' text-anchor='middle'>DRIS CAMPUS MEDIA</text><text x='50%' y='430' font-family='system-ui, -apple-system, sans-serif' font-size='14' fill='rgba(255,255,255,0.7)' text-anchor='middle'>Dev Rishi International School</text></svg>";
 
 // Mobile Menu Toggle
 function toggleMobileMenu() {
@@ -381,7 +381,7 @@ function loadFooter() {
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>${schoolData.footer.copyright}</p>
+                <p>${schoolData.footer.copyright.replace(/202\d/, new Date().getFullYear())}</p>
             </div>
         </div>
     `;
