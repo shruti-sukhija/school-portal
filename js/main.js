@@ -405,6 +405,7 @@ function loadFooter() {
                             }
                             return `<li><i class="${item.icon}" aria-hidden="true"></i> ${inner}</li>`;
                         }).join('')}
+                        <li><i class="fas fa-clock" aria-hidden="true"></i> Office Hours: 8:00 AM - 2:00 PM <div class="office-hours-status-container" style="margin-left: 20px;"></div></li>
                     </ul>
                 </div>
             </div>
@@ -533,6 +534,98 @@ function initInquiryBadge() {
 // Immediately initialize theme state during parsing to prevent visual flashing
 initTheme();
 
+// Live Office Hours Status Checker
+function initLiveOfficeHours() {
+    const checkOpen = () => {
+        const now = new Date();
+        const day = now.getDay(); // 0: Sunday, 1: Monday, ..., 6: Saturday
+        const hour = now.getHours();
+        const min = now.getMinutes();
+        
+        const isSunday = day === 0;
+        const timeInMinutes = hour * 60 + min;
+        const openTime = 8 * 60; // 8:00 AM
+        const closeTime = 14 * 60; // 2:00 PM
+        
+        let isOpen = false;
+        let statusText = "";
+        let badgeClass = "";
+        
+        if (isSunday) {
+            isOpen = false;
+            statusText = "Closed (Opens Monday at 8:00 AM)";
+            badgeClass = "office-closed";
+        } else if (timeInMinutes >= openTime && timeInMinutes < closeTime) {
+            isOpen = true;
+            statusText = "Open Now (Office closes at 2:00 PM)";
+            badgeClass = "office-open";
+        } else {
+            isOpen = false;
+            badgeClass = "office-closed";
+            if (day === 6) { // Saturday afternoon
+                statusText = "Closed (Opens Monday at 8:00 AM)";
+            } else {
+                statusText = "Closed (Opens tomorrow at 8:00 AM)";
+            }
+        }
+        
+        document.querySelectorAll('.office-hours-status-container').forEach(el => {
+            el.innerHTML = `<span class="office-hours-badge ${badgeClass}"><span class="badge-dot"></span> ${statusText}</span>`;
+        });
+    };
+    
+    checkOpen();
+    setInterval(checkOpen, 60000); // Check once per minute
+}
+
+// Copy to Clipboard Utility with visual checkmark bubble
+function initCopyToClipboard() {
+    document.body.addEventListener('click', (e) => {
+        const link = e.target.closest('a[href^="tel:"], a[href^="mailto:"]');
+        if (!link) return;
+
+        const text = link.textContent.trim();
+        const isEmail = text.includes('@') || link.href.startsWith('mailto:');
+        const isPhone = text.includes('+91') || link.href.startsWith('tel:');
+        
+        if (!isEmail && !isPhone) return;
+        
+        // Prevent navigating immediately so copying can finish, unless standard link
+        e.preventDefault();
+
+        const cleanText = isEmail 
+            ? (text.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/) || [text])[0]
+            : (text.match(/\+?\d[\d\s-]{8,14}/) || [text])[0];
+
+        navigator.clipboard.writeText(cleanText).then(() => {
+            let tooltip = document.getElementById('clipboardTooltip');
+            if (!tooltip) {
+                tooltip = document.createElement('div');
+                tooltip.id = 'clipboardTooltip';
+                tooltip.className = 'clipboard-tooltip';
+                document.body.appendChild(tooltip);
+            }
+            tooltip.innerHTML = `<i class="fas fa-check-circle" style="color: #25d366; margin-right: 6px;"></i> Copied to Clipboard!`;
+            tooltip.classList.add('visible');
+            
+            tooltip.style.left = `${e.pageX}px`;
+            tooltip.style.top = `${e.pageY - 40}px`;
+
+            clearTimeout(initCopyToClipboard._t);
+            initCopyToClipboard._t = setTimeout(() => {
+                tooltip.classList.remove('visible');
+            }, 2000);
+        }).catch(err => {
+            console.warn('Could not copy to clipboard automatically', err);
+            // Fallback: trigger standard href navigation
+            window.location.href = link.href;
+        });
+    });
+}
+
+// Immediately initialize theme state during parsing to prevent visual flashing
+initTheme();
+
 // Initialize Common Elements
 document.addEventListener('DOMContentLoaded', () => {
     loadNavigation();
@@ -541,6 +634,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initImageErrorHandling();
     initSmartScroll();
     initInquiryBadge();
+    initLiveOfficeHours();
+    initCopyToClipboard();
     
     // initialize global image allocator for galleries
     try {

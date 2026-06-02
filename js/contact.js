@@ -17,17 +17,21 @@ function loadContactPage() {
     if (contactGrid) {
         contactGrid.innerHTML = `
             <div class="contact-info animate">
-                ${schoolData.contactPage.info.items.map(item => `
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="${item.icon}" aria-hidden="true"></i>
+                ${schoolData.contactPage.info.items.map(item => {
+                    const isHours = item.label.includes('Working Hours');
+                    return `
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="${item.icon}" aria-hidden="true"></i>
+                            </div>
+                            <div>
+                                <h3>${item.label}</h3>
+                                <p>${item.value.replace(/\n/g, '<br>')}</p>
+                                ${isHours ? `<div class="office-hours-status-container" style="margin-top: 5px;"></div>` : ''}
+                            </div>
                         </div>
-                        <div>
-                            <h3>${item.label}</h3>
-                            <p>${item.value.replace(/\n/g, '<br>')}</p>
-                        </div>
-                    </div>
-                `).join('')}
+                    `;
+                }).join('')}
             </div>
             <div class="contact-form animate">
                 <h3 style="margin-bottom: 20px;">${schoolData.contactPage.form.heading}</h3>
