@@ -39,18 +39,27 @@ function loadContactPage() {
                     ${schoolData.contactPage.form.fields.map((field, idx) => {
                         const id = `contactField${idx}`;
                         const req = field.required ? 'required aria-required="true"' : '';
-                        const label = `<label for="${id}" class="sr-only">${field.placeholder}</label>`;
                         if (field.type === 'textarea') {
-                            return `<div class="form-group">${label}<textarea id="${id}" name="${id}" placeholder="${field.placeholder}" ${req}></textarea></div>`;
+                            return `
+                                <div class="form-group material-group">
+                                    <textarea id="${id}" name="${id}" placeholder=" " ${req}></textarea>
+                                    <label for="${id}">${field.placeholder}</label>
+                                </div>
+                            `;
                         }
-                        return `<div class="form-group">${label}<input id="${id}" name="${id}" type="${field.type}" placeholder="${field.placeholder}" ${req}></div>`;
+                        return `
+                            <div class="form-group material-group">
+                                <input id="${id}" name="${id}" type="${field.type}" placeholder=" " ${req}>
+                                <label for="${id}">${field.placeholder}</label>
+                            </div>
+                        `;
                     }).join('')}
                     <button type="submit" class="submit-btn">${schoolData.contactPage.form.buttonText}</button>
                 </form>
             </div>
         `;
 
-        // Append interactive Google Maps container
+        // Append interactive Google Maps container with Directions Route Assistant
         const sectionContainer = contactGrid.closest('.container') || contactGrid.parentElement;
         if (sectionContainer && !document.getElementById('contactMapContainer')) {
             sectionContainer.insertAdjacentHTML('beforeend', `
@@ -71,11 +80,37 @@ function loadContactPage() {
                             title="Dev Rishi International School Nakur Campus Location Map">
                         </iframe>
                     </div>
+                    
+                    <!-- Directions Route Assistant -->
+                    <div class="transit-assistant" style="margin-top: 25px; background: var(--white); padding: 25px; border-radius: 15px; box-shadow: var(--shadow); border-left: 5px solid var(--secondary); display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: space-between;">
+                        <div style="flex: 1; min-width: 280px; text-align: left;">
+                            <h4 style="margin: 0 0 5px 0; color: var(--primary); font-size: 1.15em; font-weight: 700;"><i class="fas fa-route" aria-hidden="true" style="color: var(--secondary); margin-right: 6px;"></i> Transit Directions Assistant</h4>
+                            <p style="margin: 0; font-size: 0.9em; color: var(--text);">Plan your route to our campus. Enter your starting city/location below to get instant driving directions.</p>
+                        </div>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap; width: 100%; max-width: 480px; justify-content: flex-end;">
+                            <input type="text" id="transitOrigin" placeholder="e.g., Saharanpur, Sarsawa, Yamunanagar" style="flex: 1; min-width: 200px; padding: 12px 15px; border: 2px solid #e2e8f0; border-radius: 8px; font-family: inherit; font-size: 0.95em; outline: none; background: var(--white); color: var(--text);">
+                            <button type="button" onclick="getDirectionsToDRIS()" class="apply-btn" style="border: none; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.95em;">
+                                <i class="fas fa-directions" aria-hidden="true"></i> Get Route
+                            </button>
+                        </div>
+                    </div>
                 </div>
             `);
         }
     }
 }
+
+function getDirectionsToDRIS() {
+    const originInput = document.getElementById('transitOrigin');
+    const origin = originInput ? originInput.value.trim() : '';
+    const destination = "Dev Rishi International School Nakur Saharanpur Uttar Pradesh 247341";
+    let url = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(destination)}`;
+    if (origin) {
+        url += `&origin=${encodeURIComponent(origin)}`;
+    }
+    window.open(url, '_blank');
+}
+window.getDirectionsToDRIS = getDirectionsToDRIS;
 
 document.addEventListener('DOMContentLoaded', () => {
     loadContactPage();

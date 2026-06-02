@@ -130,6 +130,27 @@ function loadHomePage() {
 
         initTestimonialCarousel();
     }
+
+    // Inject floating dismissible admissions alert card
+    setTimeout(() => {
+        if (document.getElementById('admissionsAlertCard')) return;
+        const alertCard = document.createElement('div');
+        alertCard.id = 'admissionsAlertCard';
+        alertCard.className = 'floating-alert-card';
+        alertCard.innerHTML = `
+            <button class="alert-close-btn" onclick="dismissAdmissionsAlert()" aria-label="Dismiss alert"><i class="fas fa-times" aria-hidden="true"></i></button>
+            <div class="alert-icon"><i class="fas fa-bell" aria-hidden="true"></i></div>
+            <div class="alert-content">
+                <h4 style="margin: 0 0 5px 0; color: var(--primary); font-size: 1.1em; font-weight: 700;">Admissions Open!</h4>
+                <p style="margin: 0; font-size: 0.85em; line-height: 1.5; color: var(--text);">Secure a bright future for your child. Enrollments are now active for Academic Session 2026-27 (Play to XII).</p>
+                <a href="admissions.html" class="apply-btn" style="padding: 6px 16px !important; font-size: 0.85em; display: inline-block; margin-top: 8px; border: none; cursor: pointer;">Explore Admissions</a>
+            </div>
+        `;
+        document.body.appendChild(alertCard);
+        
+        // Trigger entrance animation
+        setTimeout(() => alertCard.classList.add('visible'), 100);
+    }, 2500);
 }
 
 function initTestimonialCarousel() {
@@ -212,6 +233,15 @@ function initTestimonialCarousel() {
     
     startAutoPlay();
 }
+
+function dismissAdmissionsAlert() {
+    const card = document.getElementById('admissionsAlertCard');
+    if (card) {
+        card.classList.remove('visible');
+        setTimeout(() => card.remove(), 400);
+    }
+}
+window.dismissAdmissionsAlert = dismissAdmissionsAlert;
 
 document.addEventListener('DOMContentLoaded', () => {
     loadHomePage();

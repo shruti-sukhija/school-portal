@@ -1409,8 +1409,278 @@ img.loaded {
     border-top-color: rgba(255,255,255,0.03);
 }
 
+/* ====================================================
+   HIGH-FIDELITY MODERNIZATION STYLES (APPENDEES)
+   ==================================================== */
 
+/* Clipboard Tooltip */
+.clipboard-tooltip {
+    position: absolute;
+    background: var(--primary);
+    color: var(--white);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: 600;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    z-index: 10002;
+    pointer-events: none;
+    opacity: 0;
+    transform: translate(-50%, 10px);
+    transition: opacity 0.25s cubic-bezier(0.25, 1, 0.5, 1), transform 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+    white-space: nowrap;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.clipboard-tooltip.visible {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+[data-theme="dark"] .clipboard-tooltip {
+    background: #1e293b;
+    border-color: rgba(255, 255, 255, 0.08);
+}
 
+/* Floating Dismissible Alert Card */
+.floating-alert-card {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 350px;
+    background: var(--white);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    border-left: 5px solid var(--secondary);
+    padding: 20px;
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+    z-index: 999;
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+    transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1), transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.floating-alert-card.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+.alert-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 1.1em;
+    color: var(--text);
+    cursor: pointer;
+    transition: var(--transition);
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+.alert-close-btn:hover {
+    background: var(--light);
+    color: var(--primary);
+}
+.floating-alert-card .alert-icon {
+    width: 40px;
+    height: 40px;
+    background: rgba(232, 168, 23, 0.15);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--secondary);
+    font-size: 1.2em;
+    flex-shrink: 0;
+    animation: alertRing 1.5s ease infinite alternate;
+}
+@keyframes alertRing {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.08); }
+}
+@media (max-width: 480px) {
+    .floating-alert-card {
+        width: calc(100% - 40px);
+        right: 20px;
+        bottom: 95px; /* Offset to stay clear of WhatsApp float */
+    }
+}
 
+/* Academic Grade Drawers & Subject Pills */
+.program-drawer {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease, margin-top 0.4s ease;
+}
+.active-program .program-drawer {
+    max-height: 1000px;
+    opacity: 1;
+    margin-top: 10px;
+}
+.active-program .stream-chevron {
+    transform: rotate(180deg);
+    color: var(--secondary);
+}
+.stream-pill {
+    display: inline-block;
+    background: var(--light);
+    color: var(--primary);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.82em;
+    font-weight: 600;
+    margin: 3px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: var(--transition);
+}
+.stream-pill:hover {
+    background: var(--secondary);
+    color: var(--primary);
+    border-color: var(--secondary);
+    transform: translateY(-2px);
+}
+[data-theme="dark"] .stream-pill {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--dark);
+    border-color: rgba(255, 255, 255, 0.05);
+}
+[data-theme="dark"] .stream-pill:hover {
+    background: var(--secondary);
+    color: var(--primary);
+}
 
+/* Material Floating Labels Styling */
+.form-group.material-group {
+    position: relative;
+    margin-bottom: 24px;
+}
+.form-group.material-group input, 
+.form-group.material-group textarea {
+    width: 100%;
+    padding: 20px 16px 8px; /* Extra top/bottom padding to make room for floating label */
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    background: transparent;
+    font-size: 1rem;
+    outline: none;
+    color: var(--primary);
+    font-family: inherit;
+    transition: border-color 0.25s ease, background-color 0.25s ease;
+}
+[data-theme="dark"] .form-group.material-group input, 
+[data-theme="dark"] .form-group.material-group textarea {
+    color: var(--dark);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+.form-group.material-group label {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.95rem;
+    color: var(--text);
+    pointer-events: none;
+    transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+    transform-origin: left top;
+}
+.form-group.material-group textarea ~ label {
+    top: 24px;
+    transform: none;
+}
+/* When input is focused or placeholder is not shown (meaning there is input text) */
+.form-group.material-group input:focus, 
+.form-group.material-group textarea:focus {
+    border-color: var(--secondary);
+    background: rgba(26, 58, 92, 0.02);
+}
+[data-theme="dark"] .form-group.material-group input:focus, 
+[data-theme="dark"] .form-group.material-group textarea:focus {
+    border-color: var(--secondary);
+    background: rgba(255, 255, 255, 0.02);
+}
+.form-group.material-group input:focus ~ label,
+.form-group.material-group input:not(:placeholder-shown) ~ label,
+.form-group.material-group textarea:focus ~ label,
+.form-group.material-group textarea:not(:placeholder-shown) ~ label {
+    top: 6px;
+    transform: scale(0.78);
+    color: var(--secondary);
+    font-weight: 700;
+}
 
+/* Transit Route Assistant responsive styling */
+.transit-assistant {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.transit-assistant:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12) !important;
+}
+[data-theme="dark"] .transit-assistant {
+    background: var(--white);
+    border-left-color: var(--secondary);
+}
+#transitOrigin {
+    transition: border-color 0.25s ease, background-color 0.25s ease;
+}
+#transitOrigin:focus {
+    border-color: var(--secondary);
+    background: rgba(26, 58, 92, 0.02);
+}
+[data-theme="dark"] #transitOrigin {
+    border-color: rgba(255, 255, 255, 0.08);
+}
+[data-theme="dark"] #transitOrigin:focus {
+    border-color: var(--secondary);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+/* Office Hours Status Badges */
+.office-hours-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: 700;
+    line-height: 1.2;
+    border: 1px solid transparent;
+}
+.office-hours-badge .badge-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+.office-hours-badge.office-open {
+    background: rgba(37, 211, 102, 0.12);
+    color: #20ba5a;
+    border-color: rgba(37, 211, 102, 0.2);
+}
+.office-hours-badge.office-open .badge-dot {
+    background: #25d366;
+    animation: beaconPulse 1.5s infinite alternate;
+}
+.office-hours-badge.office-closed {
+    background: rgba(239, 68, 68, 0.12);
+    color: #ef4444;
+    border-color: rgba(239, 68, 68, 0.2);
+}
+.office-hours-badge.office-closed .badge-dot {
+    background: #ef4444;
+}
+@keyframes beaconPulse {
+    0% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 8px #25d366; }
+}
+[data-theme="dark"] .office-hours-badge.office-open {
+    background: rgba(37, 211, 102, 0.08);
+}
+[data-theme="dark"] .office-hours-badge.office-closed {
+    background: rgba(239, 68, 68, 0.08);
+}
