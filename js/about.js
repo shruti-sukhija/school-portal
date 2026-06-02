@@ -46,6 +46,18 @@ function loadAboutPage() {
                     </div>
                 `).join('')}
             </div>
+
+            ${schoolData.aboutPage.staff ? `
+            <div class="staff-showcase animate">
+                <div class="staff-showcase-info">
+                    <h3>${schoolData.aboutPage.staff.heading}</h3>
+                    <p>${schoolData.aboutPage.staff.description}</p>
+                </div>
+                <div class="staff-image-wrapper">
+                    <img src="${schoolData.aboutPage.staff.image}" alt="Excellence Academy Complete Staff and Faculty Team" loading="lazy" onerror="handleImageError(this)">
+                </div>
+            </div>
+            ` : ''}
         `;
     }
 

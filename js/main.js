@@ -91,22 +91,95 @@ ImageAllocator.prototype.get = function(count) {
 };
 
 function _renderGalleryGrid(images) {
-    return `<div class="gallery-grid">${images.map(src => `
-        <div class="gallery-item"><img src="${src}" loading="lazy" onerror="handleImageError(this)"></div>
-    `).join('')}</div>`;
+    return `<div class="gallery-grid">${images.map(src => {
+        const isVideo = src.toLowerCase().endsWith('.mp4');
+        if (isVideo) {
+            return `
+                <div class="gallery-item video-item" onclick="openLightbox('${src}', 'video')">
+                    <video src="${src}" autoplay muted loop playsinline></video>
+                </div>
+            `;
+        }
+        return `
+            <div class="gallery-item" onclick="openLightbox('${src}', 'image')"><img src="${src}" loading="lazy" onerror="handleImageError(this)"></div>
+        `;
+    }).join('')}</div>`;
 }
+
+// Lightbox / Full View Functions
+function openLightbox(src, type) {
+    let modal = document.getElementById('lightboxModal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'lightboxModal';
+        modal.className = 'lightbox-modal';
+        modal.setAttribute('role', 'dialog');
+        modal.setAttribute('aria-label', 'Media Full View');
+        modal.setAttribute('aria-modal', 'true');
+        modal.innerHTML = `
+            <button class="lightbox-close" aria-label="Close full view" onclick="closeLightbox()"><i class="fas fa-times" aria-hidden="true"></i></button>
+            <div class="lightbox-content" id="lightboxContent"></div>
+        `;
+        document.body.appendChild(modal);
+        
+        // Close modal when clicking outside the media content
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeLightbox();
+        });
+    }
+    
+    const content = document.getElementById('lightboxContent');
+    if (type === 'video') {
+        content.innerHTML = `<video src="${src}" controls autoplay loop playsinline class="lightbox-media"></video>`;
+    } else {
+        content.innerHTML = `<img src="${src}" alt="Full view" class="lightbox-media" onerror="handleImageError(this)">`;
+    }
+    
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden'; // Disable body scroll
+}
+
+function closeLightbox() {
+    const modal = document.getElementById('lightboxModal');
+    if (modal) {
+        modal.classList.remove('active');
+        const content = document.getElementById('lightboxContent');
+        if (content) content.innerHTML = ''; // Terminate media playback
+        document.body.style.overflow = ''; // Restore body scroll
+    }
+}
+
+// Global Keyboard controls
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
+});
 
 // Public helper to initialize a gallery inside an element by id
 function initGallery(containerId, count = 6) {
     const container = document.getElementById(containerId);
     if (!container) return;
-    const allocator = window._imageAllocator;
-    let images = [];
-    if (allocator) images = allocator.get(count);
-    if (!images || !images.length) {
-        images = (window.schoolData && window.schoolData.galleryImages) ? window.schoolData.galleryImages.slice(0, count) : [];
+
+    // Extract the category name (e.g. 'aboutGallery' -> 'about')
+    const category = containerId.replace('Gallery', '');
+    
+    // Resolve the category pool or fallback to a flat list
+    let pool = [];
+    if (window.schoolData && window.schoolData.galleryImages) {
+        if (window.schoolData.galleryImages[category]) {
+            pool = window.schoolData.galleryImages[category];
+        } else if (Array.isArray(window.schoolData.galleryImages)) {
+            pool = window.schoolData.galleryImages;
+        }
     }
+
+    if (!pool || !pool.length) return;
+
+    // Instantiate an allocator specifically for this page category
+    const allocator = new ImageAllocator(pool);
+    const images = allocator.get(count);
+
     if (!images.length) return;
+
     container.innerHTML = `<div class="section-header"><h2>Gallery</h2></div>` + _renderGalleryGrid(images);
     initImageErrorHandling();
     initAnimations();

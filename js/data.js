@@ -29,7 +29,7 @@ const schoolData = {
                 "School_Images/Sports_and_Culture/IMG-20231205-WA0047.jpg.jpeg",
                 "School_Images/NCC_Cadets.jpg.jpeg",
                 "School_Images/Smart_Class_Rooms/IMG-20260511-WA0057.jpg.jpeg",
-                "School_Images/Shooting_Range.jpeg",
+                "School_Images/Sports_and_Culture/Shooting_Range.jpeg",
                 "School_Images/Physics_Bio_Lab_Staff_Room/IMG-20260512-WA0131(1).jpg.jpeg"
             ]
         },
@@ -57,39 +57,57 @@ const schoolData = {
 
     // A flattened gallery image list (used for on-demand galleries).
     // Populate with available images from the School_Images folder.
-    galleryImages: [
-        "School_Images/School_Building.jpeg",
-        "School_Images/Reception.jpeg",
-        "School_Images/NCC_Cadets.jpg.jpeg",
-        "School_Images/Library.jpeg",
-        "School_Images/Shooting_Range.jpeg",
-        "School_Images/Chairman.jpeg",
-        "School_Images/Director.jpeg",
-        "School_Images/Principal.jpeg",
-        "School_Images/Principle_Vice_Principle.jpeg",
-        "School_Images/Vice_Principal.jpeg",
-        "School_Images/Class_Rooms/IMG-20260512-WA0055(1).jpg.jpeg",
-        "School_Images/Class_Rooms/IMG-20260512-WA0063.jpg.jpeg",
-        "School_Images/Computer_Lab/IMG-20250710-WA0007(1).jpg.jpeg",
-        "School_Images/Computer_Lab/IMG-20260511-WA0053.jpg.jpeg",
-        "School_Images/Computer_Lab/IMG-20260511-WA0054.jpg.jpeg",
-        "School_Images/Ground/Ground.jpeg",
-        "School_Images/Ground/Ground 1.jpeg",
-        "School_Images/Physics_Bio_Lab_Staff_Room/IMG-20260512-WA0131(1).jpg.jpeg",
-        "School_Images/Physics_Bio_Lab_Staff_Room/IMG-20260512-WA0136.jpg.jpeg",
-        "School_Images/Physics_Bio_Lab_Staff_Room/IMG-20260512-WA0143(1).jpg.jpeg",
-        "School_Images/Play_Class_Room/IMG-20260511-WA0042.jpg.jpeg",
-        "School_Images/Play_Class_Room/IMG-20260511-WA0043.jpg.jpeg",
-        "School_Images/Play_Class_Room/IMG-20260511-WA0045.jpg.jpeg",
-        "School_Images/Robotics/IMG-20260513-WA0054.jpg.jpeg",
-        "School_Images/Robotics/IMG-20260513-WA0056.jpg.jpeg",
-        "School_Images/Robotics/IMG-20260513-WA0063.jpg.jpeg",
-        "School_Images/Smart_Class_Rooms/IMG-20260511-WA0057.jpg.jpeg",
-        "School_Images/Smart_Class_Rooms/IMG-20260512-WA0024(1).jpg.jpeg",
-        "School_Images/Smart_Class_Rooms/IMG-20260512-WA0042(1).jpg.jpeg",
-        "School_Images/Sports_and_Culture/IMG-20231205-WA0047.jpg.jpeg",
-        "School_Images/Sports_and_Culture/WhatsApp Image 2026-05-24 at 1.40.44 PM.jpeg"
-    ],
+    galleryImages: {
+        about: [
+            "School_Images/Class_Rooms/IMG-20260512-WA0063.jpg.jpeg",
+            "School_Images/Class_Rooms/WhatsApp Image 2026-06-01 at 10.21.45 AM.jpeg",
+            "School_Images/Class_Rooms/WhatsApp Image 2026-06-01 at 10.22.48 AM.jpeg",
+            "School_Images/Class_Rooms/WhatsApp Image 2026-06-01 at 10.23.29 AM.jpeg",
+            "School_Images/Class_Rooms/WhatsApp Image 2026-06-01 at 10.24.24 AM.jpeg",
+            "School_Images/Class_Rooms/WhatsApp Image 2026-06-01 at 10.24.51 AM.jpeg",
+            "School_Images/Play_Class_Room/IMG-20260511-WA0043.jpg.jpeg",
+            "School_Images/Play_Class_Room/IMG-20260511-WA0045.jpg.jpeg",
+            "School_Images/Play_Class_Room/IMG-20260511-WA0046.jpg.jpeg",
+            "School_Images/Play_Class_Room/IMG-20260511-WA0047.jpg.jpeg",
+            "School_Images/Ground/Ground 1.jpeg",
+            "School_Images/Ground/20260511_170659.heic",
+            "School_Images/Ground/20260511_170723.heic"
+        ],
+        academics: [
+            "School_Images/Computer_Lab/IMG-20250710-WA0007(1).jpg.jpeg",
+            "School_Images/Computer_Lab/IMG-20260511-WA0054.jpg.jpeg",
+            "School_Images/Smart_Class_Rooms/IMG-20260512-WA0042(1).jpg.jpeg",
+            "School_Images/Smart_Class_Rooms/IMG-20260512-WA0051.jpg.jpeg",
+            "School_Images/Smart_Class_Rooms/IMG-20260512-WA0070.jpg.jpeg",
+            "School_Images/Physics_Bio_Lab_Staff_Room/IMG-20260512-WA0136.jpg.jpeg",
+            "School_Images/Physics_Bio_Lab_Staff_Room/IMG-20260512-WA0143(1).jpg.jpeg",
+            "School_Images/Physics_Bio_Lab_Staff_Room/IMG-20260512-WA0164(1).jpg.jpeg",
+            "School_Images/Physics_Bio_Lab_Staff_Room/IMG-20260512-WA0168(1).jpg.jpeg",
+            "School_Images/Physics_Bio_Lab_Staff_Room/IMG-20260512-WA0170.jpg.jpeg"
+        ],
+        events: [
+            "School_Images/Robotics/IMG-20260513-WA0056.jpg.jpeg",
+            "School_Images/Robotics/IMG-20260513-WA0063.jpg.jpeg",
+            "School_Images/Robotics/IMG-20260513-WA0064.jpg.jpeg",
+            "School_Images/Robotics/IMG-20260513-WA0065.jpg.jpeg",
+            "School_Images/Robotics/VID-20260513-WA0062.mp4",
+            "School_Images/Robotics/VID-20260513-WA0066.mp4",
+            "School_Images/Sports_and_Culture/IMG-20231205-WA0063(1).jpg.jpeg",
+            "School_Images/Sports_and_Culture/WhatsApp Image 2026-05-24 at 1.40.44 PM.jpeg",
+            "School_Images/Sports_and_Culture/WhatsApp Image 2026-05-24 at 1.40.45 PM.jpeg",
+            "School_Images/Sports_and_Culture/WhatsApp Image 2026-05-24 at 1.40.46 PM (1).jpeg",
+            "School_Images/Sports_and_Culture/WhatsApp Image 2026-05-24 at 1.40.46 PM.jpeg",
+            "School_Images/Sports_and_Culture/WhatsApp Image 2026-06-01 at 10.32.41 AM (1).jpeg",
+            "School_Images/Sports_and_Culture/WhatsApp Image 2026-06-01 at 10.32.41 AM.jpeg",
+            "School_Images/Sports_and_Culture/WhatsApp Image 2026-06-01 at 10.32.42 AM.jpeg",
+            "School_Images/Sports_and_Culture/WhatsApp Image 2026-06-01 at 10.32.44 AM.jpeg",
+            "School_Images/Sports_and_Culture/WhatsApp Image 2026-06-01 at 10.32.45 AM.jpeg",
+            "School_Images/Sports_and_Culture/WhatsApp Image 2026-06-01 at 10.35.50 AM (1).jpeg",
+            "School_Images/Sports_and_Culture/WhatsApp Image 2026-06-01 at 10.35.50 AM.jpeg",
+            "School_Images/Physics_Bio_Lab_Staff_Room/WhatsApp Image 2026-05-24 at 1.19.00 PM.jpeg",
+            "School_Images/Physics_Bio_Lab_Staff_Room/WhatsApp Image 2026-06-01 at 10.32.43 AM.jpeg"
+        ]
+    },
     
     hero: {
         title: "Dev Rishi International School",
@@ -159,22 +177,27 @@ const schoolData = {
         leadership: {
             heading: "School Leadership",
             members: [
-                { name: "Subhash Chaudhary", position: "Chairman", bio: "Providing visionary leadership and steering the institution towards standard academic excellence and national values.", image: "School_Images/Chairman.jpeg", icon: "fas fa-user-tie" },
-                { name: "Mayank Chaudhary", position: "Director", bio: "Driving modern operational strategies, smart infrastructure, and dynamic technology integration in sports and studies.", image: "School_Images/Director.jpeg", icon: "fas fa-user-tie" },
-                { name: "Mahak Singh", position: "Principal", bio: "M.A. Education, M.A. Hindi, B.Ed., Ph.D. (Pursuing). Over 20 years of rich academic and administrative experience leading institutions with pedagogical excellence.", image: "School_Images/Principal.jpeg", icon: "fas fa-user-tie" },
-                { name: "Ravish Chaudhary", position: "Vice Principal", bio: "Ph.D. (Education Pursuing), M.Ed., M.A. Education, M.Com. Dedicated to high standards of student discipline, teacher coordination, and modern curriculum management.", image: "School_Images/Vice_Principal.jpeg", icon: "fas fa-user-tie" }
+                { name: "Subhash Chaudhary", position: "Chairman", bio: "Providing visionary leadership and steering the institution towards standard academic excellence and national values.", image: "School_Images/Staff/Chairman.jpeg", icon: "fas fa-user-tie" },
+                { name: "Mayank Chaudhary", position: "Director", bio: "Driving modern operational strategies, smart infrastructure, and dynamic technology integration in sports and studies.", image: "School_Images/Staff/Director.jpeg", icon: "fas fa-user-tie" },
+                { name: "Mahak Singh", position: "Principal", bio: "M.A. Education, M.A. Hindi, B.Ed., Ph.D. (Pursuing). Over 20 years of rich academic and administrative experience leading institutions with pedagogical excellence.", image: "School_Images/Staff/Principal.jpeg", icon: "fas fa-user-tie" },
+                { name: "Ravish Chaudhary", position: "Vice Principal", bio: "Ph.D. (Education Pursuing), M.Ed., M.A. Education, M.Com. Dedicated to high standards of student discipline, teacher coordination, and modern curriculum management.", image: "School_Images/Staff/Vice_Principal.jpeg", icon: "fas fa-user-tie" }
             ]
+        },
+        staff: {
+            heading: "Our Dedicated Team & Staff",
+            description: "At Dev Rishi International School, our teachers, administrators, and support staff work hand-in-hand to cultivate a nurturing and supportive environment for every student. Our team brings a rich blend of experience, academic brilliance, and heart to the campus every single day.",
+            image: "School_Images/Staff/CompleteStaff.jpeg"
         },
         facilities: {
             heading: "State-of-the-Art Facilities",
             items: [
                 { name: "School Building & Campus", icon: "fas fa-school", description: "Spacious, secure, and modern campus only 3 km from Nakur on Sarsawa Road, set amidst beautiful scenery.", image: "School_Images/School_Building.jpeg" },
-                { name: "Professional Shooting Range", icon: "fas fa-bullseye", description: "Top-tier indoor rifle and pistol shooting range for professional coaching, developing absolute focus and sportsmanship.", image: "School_Images/Shooting_Range.jpeg" },
+                { name: "Professional Shooting Range", icon: "fas fa-bullseye", description: "Top-tier indoor rifle and pistol shooting range for professional coaching, developing absolute focus and sportsmanship.", image: "School_Images/Sports_and_Culture/Shooting_Range.jpeg" },
                 { name: "Smart Classrooms", icon: "fas fa-desktop", description: "Equipped with state-of-the-art interactive smart screens for engaging, graphic-rich learning sessions.", image: "School_Images/Smart_Class_Rooms/IMG-20260511-WA0057.jpg.jpeg" },
                 { name: "Advanced Robotics Lab", icon: "fas fa-robot", description: "A futuristic workspace for hands-on robotics design, electronics coding, and artificial intelligence models.", image: "School_Images/Robotics/IMG-20260513-WA0054.jpg.jpeg" },
                 { name: "Composite Science Labs", icon: "fas fa-flask-vial", description: "Fully stocked Physics, Chemistry, and Biology laboratories enabling deep experimental inquiry and research.", image: "School_Images/Physics_Bio_Lab_Staff_Room/IMG-20260512-WA0131(1).jpg.jpeg" },
                 { name: "Computer Laboratory", icon: "fas fa-laptop-code", description: "Advanced systems with high-speed internet connectivity, supporting computer science training from early grades.", image: "School_Images/Computer_Lab/IMG-20260511-WA0053.jpg.jpeg" },
-                { name: "Knowledge Library", icon: "fas fa-book-open", description: "A vast collection of reference volumes, academic journals, storytelling books, and digital reading tools.", image: "School_Images/Library.jpeg" },
+                { name: "Knowledge Library", icon: "fas fa-book-open", description: "A vast collection of reference volumes, academic journals, storytelling books, and digital reading tools.", image: "School_Images/Class_Rooms/Library.jpeg" },
                 { name: "Sports Playground", icon: "fas fa-running", description: "Expansive outdoor playground with track facilities and fields for cricket, football, basketball, and athletic activities.", image: "School_Images/Ground/Ground.jpeg" },
                 { name: "Play Class Room", icon: "fas fa-shapes", description: "A vibrant, creative, and safe play school environment with interactive toys for our pre-primary children.", image: "School_Images/Play_Class_Room/IMG-20260511-WA0042.jpg.jpeg" }
             ]
@@ -196,7 +219,7 @@ const schoolData = {
             heading: "Co-Curricular & Special Highlights",
             items: [
                 { name: "National Cadet Corps (NCC)", icon: "fa-shield-halved", description: "Fostering leadership, courage, and secular ideals. Our cadets engage in camp training, drill routines, and public welfare campaigns.", image: "School_Images/NCC_Cadets.jpg.jpeg" },
-                { name: "Shooting Sports Club", icon: "fa-crosshairs", description: "Unleash discipline and laser focus inside our indoor shooting range. Professional training for district, state, and national tournaments.", image: "School_Images/Shooting_Range.jpeg" },
+                { name: "Shooting Sports Club", icon: "fa-crosshairs", description: "Unleash discipline and laser focus inside our indoor shooting range. Professional training for district, state, and national tournaments.", image: "School_Images/Sports_and_Culture/Shooting_Range.jpeg" },
                 { name: "Robotics & AI Club", icon: "fa-microchip", description: "Learn circuit design, logic gates, microcontrollers, and Python code to design smart robots and solve real-world problems.", image: "School_Images/Robotics/IMG-20260513-WA0054.jpg.jpeg" },
                 { name: "Sports & Cultural Society", icon: "fa-masks-theater", description: "Active societies promoting track & field athletics, martial arts, drama, classical music, and folk arts to nurture global perspective.", image: "School_Images/Sports_and_Culture/IMG-20231205-WA0047.jpg.jpeg" }
             ]
