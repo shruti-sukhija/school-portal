@@ -25,6 +25,40 @@ function loadAboutPage() {
                     <p>${schoolData.aboutPage.story.text}</p>
                 </div>
             </div>
+
+            <!-- Vision & Mission Side-by-Side Cards -->
+            ${schoolData.aboutPage.visionMission ? `
+            <div class="features-grid vision-mission-grid animate" style="margin-top: 50px; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 30px;">
+                <div class="feature-card vision-card animate" style="text-align: left; padding: 35px; border-radius: 15px; border-top: 4px solid var(--secondary); box-shadow: var(--shadow);">
+                    <div class="feature-icon" style="margin: 0 0 20px 0;"><i class="${schoolData.aboutPage.visionMission.vision.icon}" aria-hidden="true"></i></div>
+                    <h3 style="color: var(--primary); font-size: 1.5em; margin-bottom: 15px;">${schoolData.aboutPage.visionMission.vision.heading}</h3>
+                    <p style="color: var(--text); line-height: 1.7; font-size: 1em;">${schoolData.aboutPage.visionMission.vision.text}</p>
+                </div>
+                <div class="feature-card mission-card animate" style="text-align: left; padding: 35px; border-radius: 15px; border-top: 4px solid var(--accent); box-shadow: var(--shadow);">
+                    <div class="feature-icon" style="margin: 0 0 20px 0; background: linear-gradient(135deg, var(--accent), var(--primary));"><i class="${schoolData.aboutPage.visionMission.mission.icon}" aria-hidden="true"></i></div>
+                    <h3 style="color: var(--primary); font-size: 1.5em; margin-bottom: 15px;">${schoolData.aboutPage.visionMission.mission.heading}</h3>
+                    <p style="color: var(--text); line-height: 1.7; font-size: 1em;">${schoolData.aboutPage.visionMission.mission.text}</p>
+                </div>
+            </div>
+            ` : ''}
+
+            <!-- Principal's Welcome Desk Panel -->
+            ${schoolData.aboutPage.principalMessage ? `
+            <div class="principal-showcase animate">
+                <div class="principal-showcase-image">
+                    <img src="${schoolData.aboutPage.principalMessage.image}" alt="${schoolData.aboutPage.principalMessage.name}" onerror="handleImageError(this)">
+                </div>
+                <div class="principal-showcase-text">
+                    <h3>${schoolData.aboutPage.principalMessage.heading}</h3>
+                    <span class="principal-showcase-subtitle">
+                        ${schoolData.aboutPage.principalMessage.name} &nbsp;|&nbsp; <small>${schoolData.aboutPage.principalMessage.credentials}</small>
+                    </span>
+                    <div class="principal-message-content">
+                        ${schoolData.aboutPage.principalMessage.message.split('\n\n').map(p => `<p>"${p}"</p>`).join('')}
+                    </div>
+                </div>
+            </div>
+            ` : ''}
         `;
     }
 

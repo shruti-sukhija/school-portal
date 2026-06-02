@@ -181,6 +181,25 @@ const schoolData = {
     aboutPage: {
         header: { title: "About Our School", subtitle: "Our story, mission, and leadership team" },
         story: { heading: "Our Story", text: "Dev Rishi International School was founded in 2015 with the noble goal of bringing progressive, high-quality modern education to the Saharanpur region. Affiliated to the Central Board of Secondary Education (CBSE), New Delhi, we are situated in a spacious campus on Sarsawa Road, just 3 km from Nakur. Our school nurtures children from Pre-nursery all the way to Grade XII (offering specialized Science, Commerce, and Humanities streams).\n\nWe focus on a comprehensive educational approach—combining strict academic rigor with life-changing extracurricular skills. With unique facilities like a professional indoor Shooting Range, a fully active National Cadet Corps (NCC) wing, digital Smart Classrooms, highly updated Science/Computer Labs, and a pioneering Robotics program, we ensure that every student discovers their absolute potential and emerges as a responsible, resilient global citizen." },
+        visionMission: {
+            vision: {
+                heading: "Our Vision",
+                text: "To build a benchmark institution of holistic learning that nurtures intellectually brilliant, emotionally resilient, and morally upright leaders who are deeply rooted in national values and equipped to excel in a globalized world.",
+                icon: "fas fa-eye"
+            },
+            mission: {
+                heading: "Our Mission",
+                text: "We commit to offering state-of-the-art digital infrastructure, competitive sports complexes (like our professional shooting range), and character-building wings (like the NCC) that challenge students to master their strengths, cultivate patriotic service, and emerge as responsible, progressive global citizens.",
+                icon: "fas fa-bullseye"
+            }
+        },
+        principalMessage: {
+            heading: "Principal's Welcome Desk",
+            name: "Dr. Mahak Singh",
+            credentials: "M.A. Education, M.A. Hindi, B.Ed., Ph.D. (Pursuing)",
+            image: "School_Images/Staff/Principal.jpeg",
+            message: "Dear Parents, Students, and Well-wishers,\n\nWelcome to Dev Rishi International School. Since our foundation in 2015, our guiding light has been to provide a holistic, progressive educational environment that balances strict academic excellence with practical extracurricular life skills. We believe that every child possesses a unique spark of potential. Our digital smart classrooms, pioneering robotics lab, active NCC cadets wing, and professional indoor shooting range are designed to ignite that spark and cultivate discipline, leadership, and focus.\n\nWe do not just prepare students for examinations; we prepare them for life. I invite you to join hands with us in this beautiful journey of nurturing the future leaders of our nation.\n\nWarm regards,\nDr. Mahak Singh\nPrincipal, DRIS"
+        },
         leadership: {
             heading: "School Leadership",
             members: [
