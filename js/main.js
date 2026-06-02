@@ -62,8 +62,12 @@ function handleImageError(imgElement) {
 function initImageErrorHandling() {
     document.querySelectorAll('img').forEach(img => {
         img.setAttribute('onerror', 'handleImageError(this)');
-        if (img.complete && img.naturalWidth === 0) {
-            handleImageError(img);
+        img.addEventListener('load', () => img.classList.add('loaded'), { once: true });
+        if (img.complete) {
+            img.classList.add('loaded');
+            if (img.naturalWidth === 0) {
+                handleImageError(img);
+            }
         }
     });
 }
@@ -336,6 +340,28 @@ function loadNavigation() {
         }).join('') + `<a href="admissions.html" class="apply-btn">Apply Now</a>`;
         mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMobileMenu));
     }
+
+    // Theme Switcher Injection
+    const navCont = document.querySelector('.nav-container');
+    if (navCont && !document.getElementById('themeToggleBtn')) {
+        const toggle = document.createElement('button');
+        toggle.id = 'themeToggleBtn';
+        toggle.className = 'theme-toggle-btn';
+        toggle.setAttribute('aria-label', 'Toggle light/dark theme');
+        toggle.setAttribute('type', 'button');
+        toggle.innerHTML = `<i class="fas fa-moon" aria-hidden="true"></i>`;
+        
+        // Insert right before hamburger button
+        const hamburger = navCont.querySelector('.hamburger');
+        if (hamburger) {
+            navCont.insertBefore(toggle, hamburger);
+        } else {
+            navCont.appendChild(toggle);
+        }
+        
+        toggle.addEventListener('click', toggleTheme);
+        updateThemeToggleIcon(document.documentElement.getAttribute('data-theme') || 'light');
+    }
 }
 
 // Load Footer
@@ -462,6 +488,51 @@ function initSmartScroll() {
     }, { passive: true });
 }
 
+// Theme management functions
+function initTheme() {
+    const savedTheme = localStorage.getItem('dris-theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+}
+
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    const nextTheme = currentTheme === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', nextTheme);
+    localStorage.setItem('dris-theme', nextTheme);
+    updateThemeToggleIcon(nextTheme);
+}
+
+function updateThemeToggleIcon(theme) {
+    const btn = document.getElementById('themeToggleBtn');
+    if (btn) {
+        const icon = btn.querySelector('i');
+        if (icon) {
+            icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        }
+    }
+}
+
+// WhatsApp Quick-Inquiry Badge Injection
+function initInquiryBadge() {
+    if (document.getElementById('whatsappInquiryBadge')) return;
+    const badge = document.createElement('a');
+    badge.id = 'whatsappInquiryBadge';
+    badge.className = 'whatsapp-inquiry-badge';
+    badge.href = 'https://wa.me/917037535234';
+    badge.target = '_blank';
+    badge.rel = 'noopener noreferrer';
+    badge.setAttribute('aria-label', 'Inquire on WhatsApp');
+    badge.innerHTML = `
+        <div class="whatsapp-badge-pulse"></div>
+        <i class="fab fa-whatsapp" aria-hidden="true"></i>
+        <span>Quick Inquiry</span>
+    `;
+    document.body.appendChild(badge);
+}
+
+// Immediately initialize theme state during parsing to prevent visual flashing
+initTheme();
+
 // Initialize Common Elements
 document.addEventListener('DOMContentLoaded', () => {
     loadNavigation();
@@ -469,6 +540,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initAnimations();
     initImageErrorHandling();
     initSmartScroll();
+    initInquiryBadge();
     
     // initialize global image allocator for galleries
     try {
